@@ -1,4 +1,4 @@
-"""Воскресный пост: итоги недели оракула + карта следующей недели."""
+"""Воскресный пост: итоги недели оракула (прогнозы пн–пт) + карта следующей недели."""
 import datetime as dt
 import os
 from PIL import Image, ImageDraw, ImageFilter
@@ -10,8 +10,8 @@ DAYS = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 
 
 def collect(history, today):
-    """Результаты сверок за 6 дней до воскресенья (пн–сб), по дням сверки."""
-    start = today - dt.timedelta(days=6)
+    """Сверенные прогнозы текущей недели (пн–пт), по дню прогноза."""
+    start = today - dt.timedelta(days=today.weekday())
     week = [h for h in history if h.get("results") and start <= dt.date.fromisoformat(h["day"]) < today]
     if not week:
         return None
@@ -22,7 +22,7 @@ def collect(history, today):
     worst = max((x for x in flat if not x[2]["hit"]), key=lambda x: abs(x[2]["chg"]), default=None)
     per_asset = {k: [sum(h["results"][k]["hit"] for h in week if k in h["results"]),
                      sum(1 for h in week if k in h["results"])] for k in ASSETS}
-    return {"start": start, "end": today - dt.timedelta(days=1), "hits": hits, "total": total,
+    return {"start": start, "end": max(dt.date.fromisoformat(h["day"]) for h in week), "hits": hits, "total": total,
             "acc": round(hits / total * 100), "week": week, "best": best, "worst": worst,
             "per_asset": per_asset}
 
@@ -45,16 +45,16 @@ def render_week(summary, week_moves, next_card, today, out_path, handle=""):
     by_day = {dt.date.fromisoformat(h["day"]).weekday(): h["results"] for h in summary["week"]}
     col0, cw, y = x0 + 250, 62, 380
     f_h, f_row, f_dot = F("DejaVuSans.ttf", 20), F("DejaVuSans-Bold.ttf", 22), F("DejaVuSans-Bold.ttf", 30)
-    for i in range(6):
+    for i in range(5):
         d.text((col0 + i * cw + cw / 2, y), DAYS[i], font=f_h, fill=R.GREY, anchor="mm")
     for j, (k, a) in enumerate(ASSETS.items()):
         yy = y + 58 + j * 60
         d.text((x0, yy), a["title"].split(" (")[0], font=f_row, fill=(236, 230, 214), anchor="lm")
-        for i in range(6):
+        for i in range(5):
             r = by_day.get(i, {}).get(k)
             sym, col = ("●", R.GREEN) if r and r["hit"] else ("○", R.RED) if r else ("·", R.GOLD_DIM)
             d.text((col0 + i * cw + cw / 2, yy), sym, font=f_dot, fill=col, anchor="mm")
-    d.line([(x0, y + 240), (col0 + 6 * cw, y + 240)], fill=R.GOLD_DIM, width=1)
+    d.line([(x0, y + 240), (col0 + 5 * cw, y + 240)], fill=R.GOLD_DIM, width=1)
 
     # движение рынка за неделю
     yy = y + 280
@@ -64,7 +64,7 @@ def render_week(summary, week_moves, next_card, today, out_path, handle=""):
         txt = f"{mv:+.2f}%" if mv is not None else "—"
         col = R.GREEN if mv and mv > 0 else R.RED if mv and mv < 0 else R.GREY
         d.text((x0, yy + 38 + j * 32), a["title"].split(" (")[0], font=F("DejaVuSans.ttf", 21), fill=R.GREY, anchor="lm")
-        d.text((col0 + 6 * cw, yy + 38 + j * 32), txt, font=F("DejaVuSans-Bold.ttf", 21), fill=col, anchor="rm")
+        d.text((col0 + 5 * cw, yy + 38 + j * 32), txt, font=F("DejaVuSans-Bold.ttf", 21), fill=col, anchor="rm")
 
     # правая колонка: карта следующей недели
     cx = R.W - 70 - R.CW

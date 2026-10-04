@@ -38,7 +38,7 @@ def save_state(s):
 def score_previous(state, mkt):
     """Сверяем энергию вчерашних карт с фактическим движением с момента расклада."""
     last = state.get("last")
-    if not last:
+    if not last or last.get("scored"):
         return None
     hits, total, detail, results = 0, 0, [], {}
     for key, p in last["picks"].items():
@@ -68,25 +68,31 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="не публиковать и не сохранять состояние")
     ap.add_argument("--force", action="store_true", help="публиковать даже если сегодня уже был пост")
     ap.add_argument("--weekly", action="store_true", help="выпустить итоги недели (по умолчанию — по воскресеньям)")
-    ap.add_argument("--daily", action="store_true", help="выпустить обычный расклад даже в воскресенье (для теста)")
     ap.add_argument("--test", action="store_true",
                     help="тестовая публикация: расклад в любой день, счёт и состояние не сохраняются")
     args = ap.parse_args()
-    if args.test:
-        args.daily = True
 
-    today = dt.datetime.now(TZ).date()
+    today = (dt.date.fromisoformat(os.environ["TAROT_TODAY"]) if os.getenv("TAROT_TODAY")  # для проверок
+             else dt.datetime.now(TZ).date())
     state = load_state()
     if state.get("last") and state["last"]["day"] == today.isoformat() and not args.force and not args.dry_run \
             and not args.test:
         print("Сегодня расклад уже опубликован.")
         return
 
-    if (today.weekday() == 6 and not args.daily) or args.weekly:  # воскресенье — только итоги недели
+    if args.weekly or (today.weekday() == 6 and not args.test):  # воскресенье — только итоги недели
         if state.get("last_weekly") == today.isoformat() and not args.force and not args.dry_run:
             print("Итоги недели уже опубликованы.")
             return
         return run_weekly(state, today, args)
+
+    if args.test:  # тест в выходной/праздник показывает пост на ближайший торговый день
+        day = market.next_trading_day(today)
+    elif market.is_trading_day(today):
+        day = today
+    else:
+        print("Сегодня биржа не работает — расклад не публикуем.")
+        return
 
     mkt = market.fetch_all()
     if all(v is None for v in mkt.values()):
@@ -96,10 +102,10 @@ def main():
     cards = deck.draw(len(market.ASSETS))
     spread = dict(zip(market.ASSETS.keys(), cards))
 
-    text = writer.generate(today, spread, mkt, score, first=not state.get("last")) + DISCLAIMER
+    text = writer.generate(day, spread, mkt, score, first=not state.get("last")) + DISCLAIMER
     img_path = os.path.join(HERE, "data", f"spread_{today.isoformat()}.jpg")
     os.makedirs(os.path.dirname(img_path), exist_ok=True)
-    render.render(spread, mkt, today, img_path, handle=os.getenv("CHANNEL_HANDLE", ""))
+    render.render(spread, mkt, day, img_path, handle=os.getenv("CHANNEL_HANDLE", ""))
 
     print(text, f"\n\n[{len(text)} симв.] картинка: {img_path}")
     if args.dry_run:
@@ -110,23 +116,29 @@ def main():
         os.remove(img_path)
         print("Тестовый пост опубликован, состояние не сохранено.")
         return
-    state["last"] = {"day": today.isoformat(), "picks": {
+    state["last"] = {"day": day.isoformat(), "picks": {
         k: {"card": c["name"], "reversed": c["reversed"], "polarity": c["effective_polarity"],
             "image": c["image"], "close": (mkt[k] or {}).get("close"), "date": (mkt[k] or {}).get("date")}
         for k, c in spread.items()}}
-    state["history"] = (state.get("history", []) + [{"day": today.isoformat(),
-                        "results": (score or {}).get("results", {})}])[-120:]
+    if score:  # история ведётся по дню прогноза
+        state["history"] = (state.get("history", []) + [{"day": score["pred_day"], "results": score["results"]}])[-120:]
     save_state(state)
     os.remove(img_path)
     print("Опубликовано.")
 
 
 def run_weekly(state, today, args):
+    mkt = market.fetch_all()
+    score = score_previous(state, mkt)  # сначала сверяем пятничный расклад, чтобы он попал в итоги
+    if score:
+        state["history"] = (state.get("history", []) + [{"day": score["pred_day"], "results": score["results"]}])[-120:]
+        state["last"]["scored"] = True
     summary = weekly.collect(state.get("history", []), today)
     if not summary:
         print("За неделю нет сверенных раскладов — итоги пропускаем.")
+        if score and not args.dry_run:
+            save_state(state)
         return
-    mkt = market.fetch_all()
     moves = {k: (m or {}).get("chg_5d") for k, m in mkt.items()}
     next_card = deck.draw(1, reversal_chance=0.3)[0]
     text = writer.generate_weekly(summary, moves, next_card) + DISCLAIMER

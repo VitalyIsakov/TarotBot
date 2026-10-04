@@ -1,4 +1,8 @@
-"""Рыночные данные: индекс Мосбиржи и RGBI — MOEX ISS, USD/RUB — официальный курс ЦБ."""
+"""Рыночные данные с Мосбиржи (ISS): индекс IMOEX, индекс гособлигаций RGBI и курс доллара.
+
+Доллар — по вечному фьючерсу USDRUBF: с июня 2024 г. спот USD/RUB на бирже не торгуется,
+фиксинг по доллару не считается, а «индикативный курс» совпадает с курсом ЦБ.
+"""
 import datetime as dt
 import time
 import requests
@@ -20,9 +24,10 @@ def _get(url, attempts=6, **kw):
             time.sleep(3 * (i + 1))
 
 
-def _moex_index(secid):
+def _moex_history(engine, market, secid):
+    """Дневные закрытия инструмента: последнее, изменение за день и за 5 торговых дней."""
     since = (dt.date.today() - dt.timedelta(days=21)).isoformat()
-    r = _get(f"{ISS}/history/engines/stock/markets/index/securities/{secid}.json",
+    r = _get(f"{ISS}/history/engines/{engine}/markets/{market}/securities/{secid}.json",
              params={"from": since, "iss.meta": "off", "history.columns": "TRADEDATE,CLOSE"})
     rows = [x for x in r.json()["history"]["data"] if x[1] is not None]
     if len(rows) < 2:
@@ -34,32 +39,13 @@ def _moex_index(secid):
             "chg_1d": (last / prev - 1) * 100, "chg_5d": (last / week_ago - 1) * 100}
 
 
-def _cbr_usd():
-    r = _get("https://www.cbr-xml-daily.ru/daily_json.js")
-    d = r.json()
-    usd = d["Valute"]["USD"]
-    val, prev = usd["Value"] / usd["Nominal"], usd["Previous"] / usd["Nominal"]
-    week = None
-    base = dt.date.fromisoformat(d["Date"][:10])
-    for back in range(7, 11):  # курс неделю назад из архива (ищем ближайший рабочий день)
-        day = base - dt.timedelta(days=back)
-        try:
-            a = requests.get(f"https://www.cbr-xml-daily.ru/archive/{day:%Y/%m/%d}/daily_json.js",
-                             headers=UA, timeout=20)
-            if a.ok:
-                u = a.json()["Valute"]["USD"]
-                week = (val / (u["Value"] / u["Nominal"]) - 1) * 100
-                break
-        except Exception:
-            pass
-    return {"date": d["Date"][:10], "close": round(val, 4),
-            "chg_1d": (val / prev - 1) * 100, "chg_5d": week}
-
-
 ASSETS = {
-    "IMOEX": {"title": "Индекс Мосбиржи", "emoji": "📈", "fetch": lambda: _moex_index("IMOEX")},
-    "RGBI": {"title": "RGBI (гособлигации)", "emoji": "🏦", "fetch": lambda: _moex_index("RGBI")},
-    "USDRUB": {"title": "USD/RUB (курс ЦБ)", "emoji": "💵", "fetch": _cbr_usd},
+    "IMOEX": {"title": "Индекс Мосбиржи", "emoji": "📈",
+              "fetch": lambda: _moex_history("stock", "index", "IMOEX")},
+    "RGBI": {"title": "RGBI (гособлигации)", "emoji": "🏦",
+             "fetch": lambda: _moex_history("stock", "index", "RGBI")},
+    "USDRUB": {"title": "USD/RUB (биржевой курс)", "emoji": "💵",
+               "fetch": lambda: _moex_history("futures", "forts", "USDRUBF")},
 }
 
 
@@ -99,17 +85,33 @@ def day_long(x):
 
 
 def asof(key, m):
-    """За какой день цифра: закрытие биржи или дата, с которой действует курс ЦБ."""
-    if not m:
-        return "нет данных"
-    return f"курс ЦБ с {day_short(m['date'])}" if key == "USDRUB" else f"закрытие {day_short(m['date'])}"
+    """За какой торговый день цифра."""
+    return f"закрытие {day_short(m['date'])}" if m else "нет данных"
 
 
 def dateline(forecast_day, mkt):
-    """Строка под заголовком поста: на какой день прогноз и за какие дни котировки."""
+    """Строка под заголовком поста: на какой день прогноз и за какой день котировки."""
     groups = {}
     for k, m in mkt.items():
         if m:
             groups.setdefault(asof(k, m), []).append(SHORT[k])
-    data = "; ".join(f"{' и '.join(names)} — {lab}" for lab, names in groups.items()) or "нет данных"
+    if len(groups) == 1:  # обычный случай: все котировки за один день
+        data = next(iter(groups))
+    else:
+        data = "; ".join(f"{', '.join(n)} — {lab}" for lab, n in groups.items()) or "нет данных"
     return f"🗓 <b>Прогноз на {day_long(forecast_day)}</b>\n<i>Котировки: {data}</i>"
+
+
+# Нерабочие праздничные дни РФ (биржа закрыта). Переносы выходных меняются по годам — их можно дописать сюда.
+HOLIDAYS = {"01-01", "01-02", "01-03", "01-04", "01-05", "01-06", "01-07", "01-08",
+            "02-23", "03-08", "05-01", "05-09", "06-12", "11-04"}
+
+
+def is_trading_day(d):
+    return d.weekday() < 5 and f"{d:%m-%d}" not in HOLIDAYS
+
+
+def next_trading_day(d):
+    while not is_trading_day(d):
+        d += dt.timedelta(days=1)
+    return d
