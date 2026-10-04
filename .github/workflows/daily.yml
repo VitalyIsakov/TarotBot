@@ -1,0 +1,40 @@
+name: daily-tarot
+
+on:
+  schedule:
+    - cron: "41 5 * * *"   # 08:41 МСК, каждый день (Мосбиржа торгует и в выходные)
+  workflow_dispatch:        # ручной запуск кнопкой в GitHub
+    inputs:
+      args:
+        description: "Параметры: --test (тестовый пост, без сохранения счёта), --weekly (итоги), --force (повторно сегодня)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write           # чтобы сохранить data/state.json (счёт точности)
+
+concurrency: daily-tarot
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python main.py ${{ github.event.inputs.args }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CHANNEL_HANDLE: ${{ vars.CHANNEL_HANDLE }}
+      - name: Save state
+        run: |
+          [ -f data/state.json ] || exit 0
+          git config user.name "tarot-bot"
+          git config user.email "tarot-bot@users.noreply.github.com"
+          git add data/state.json
+          git diff --cached --quiet || (git commit -m "state: $(date -u +%F)" && git push)
