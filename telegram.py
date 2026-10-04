@@ -2,7 +2,8 @@
 
 Два формата поста (переменная POST_LAYOUT):
 - preview — обычное текстовое сообщение во всю ширину экрана, картинка расклада большим превью над текстом.
-  Картинка кладётся в папку media/ репозитория и берётся по публичной ссылке raw.githubusercontent.com,
+  Картинка кладётся в папку media/ репозитория и отдаётся через CDN jsDelivr (запасной вариант —
+  raw.githubusercontent.com, который Telegram иногда не может забрать из-за лимитов GitHub),
   поэтому репозиторий на GitHub должен быть публичным. Режим по умолчанию при запуске в GitHub Actions.
 - caption — картинка с подписью. На телефоне подпись не шире картинки (~75% экрана). Запасной режим:
   включается сам, если картинку не удалось выложить по ссылке.
@@ -35,8 +36,21 @@ def _check(r):
 # ---------- размещение картинки по публичной ссылке ----------
 
 def _git(*args):
-    subprocess.run(["git", "-c", "user.name=tarot-bot", "-c", "user.email=tarot-bot@users.noreply.github.com",
-                    *args], cwd=HERE, check=True, capture_output=True, text=True)
+    return subprocess.run(["git", "-c", "user.name=tarot-bot", "-c", "user.email=tarot-bot@users.noreply.github.com",
+                           *args], cwd=HERE, check=True, capture_output=True, text=True).stdout.strip()
+
+
+def _wait_image(url, attempts=15):
+    """Ждём, пока ссылка начнёт отдавать картинку (заодно прогреваем кэш CDN)."""
+    for _ in range(attempts):
+        try:
+            r = requests.get(url, timeout=15)
+            if r.ok and r.headers.get("content-type", "").startswith("image"):
+                return True
+        except requests.RequestException:
+            pass
+        time.sleep(3)
+    return False
 
 
 def host_image(image_path):
@@ -54,16 +68,14 @@ def host_image(image_path):
         _git("pull", "--rebase", "origin", branch)
         _git("push", "origin", f"HEAD:{branch}")
 
-    url = f"https://raw.githubusercontent.com/{repo}/{branch}/media/{name}"
-    for _ in range(20):  # ждём, пока ссылка начнёт отдавать картинку
-        try:
-            r = requests.get(url, timeout=15)
-            if r.ok and r.headers.get("content-type", "").startswith("image"):
-                return url
-        except requests.RequestException:
-            pass
-        time.sleep(3)
-    raise RuntimeError(f"картинка недоступна по ссылке {url} — репозиторий на GitHub публичный?")
+    sha = _git("rev-parse", "HEAD")  # ссылка на конкретный коммит: CDN не отдаст устаревшую версию
+    for url in (f"https://cdn.jsdelivr.net/gh/{repo}@{sha}/media/{name}",
+                f"https://raw.githubusercontent.com/{repo}/{sha}/media/{name}"):
+        if _wait_image(url):
+            print(f"[telegram] картинка для превью: {url}")
+            return url
+        print(f"[telegram] ссылка не отвечает: {url}")
+    raise RuntimeError("картинка недоступна по ссылкам — репозиторий на GitHub публичный?")
 
 
 # ---------- отправка ----------

@@ -2,6 +2,8 @@
 
 Доллар — по вечному фьючерсу USDRUBF: с июня 2024 г. спот USD/RUB на бирже не торгуется,
 фиксинг по доллару не считается, а «индикативный курс» совпадает с курсом ЦБ.
+Цена доллара за день — закрытие основной сессии (последняя сделка до 19:00 МСК), а не вечерней:
+дневная история биржи по фьючерсам даёт цену конца вечерней сессии (~23:50).
 """
 import datetime as dt
 import time
@@ -39,13 +41,34 @@ def _moex_history(engine, market, secid):
             "chg_1d": (last / prev - 1) * 100, "chg_5d": (last / week_ago - 1) * 100}
 
 
+def _moex_futures_main_close(secid):
+    """Закрытия основной сессии (последняя сделка до 19:00 МСК) по будним дням из часовых свечей."""
+    since = (dt.date.today() - dt.timedelta(days=16)).isoformat()
+    r = _get(f"{ISS}/engines/futures/markets/forts/securities/{secid}/candles.json",
+             params={"from": since, "interval": 60, "iss.meta": "off", "candles.columns": "begin,close"})
+    by_day = {}
+    for begin, close in r.json()["candles"]["data"]:
+        day, hour = begin[:10], int(begin[11:13])
+        if hour < 19 and dt.date.fromisoformat(day).weekday() < 5:
+            by_day.setdefault(day, {})[hour] = close
+    # день засчитываем, только если основная сессия уже закончилась (есть свеча 18:00)
+    rows = [(d, h[max(h)]) for d, h in sorted(by_day.items()) if 18 in h]
+    if len(rows) < 2:
+        raise RuntimeError(f"{secid}: мало данных")
+    last_date, last = rows[-1]
+    prev = rows[-2][1]
+    week_ago = rows[-6][1] if len(rows) >= 6 else rows[0][1]
+    return {"date": last_date, "close": last,
+            "chg_1d": (last / prev - 1) * 100, "chg_5d": (last / week_ago - 1) * 100}
+
+
 ASSETS = {
     "IMOEX": {"title": "Индекс Мосбиржи", "emoji": "📈",
               "fetch": lambda: _moex_history("stock", "index", "IMOEX")},
     "RGBI": {"title": "RGBI (гособлигации)", "emoji": "🏦",
              "fetch": lambda: _moex_history("stock", "index", "RGBI")},
-    "USDRUB": {"title": "USD/RUB (биржевой курс)", "emoji": "💵",
-               "fetch": lambda: _moex_history("futures", "forts", "USDRUBF")},
+    "USDRUB": {"title": "USDRUBF (вечный фьючерс на доллар)", "emoji": "💵",
+               "fetch": lambda: _moex_futures_main_close("USDRUBF")},
 }
 
 
@@ -65,7 +88,7 @@ WD = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 WD_ACC = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]  # «на …», «в …»
 MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
           "сентября", "октября", "ноября", "декабря"]
-SHORT = {"IMOEX": "индекс", "RGBI": "RGBI", "USDRUB": "доллар"}
+SHORT = {"IMOEX": "индекс", "RGBI": "RGBI", "USDRUB": "USDRUBF"}
 
 
 def _d(x):
