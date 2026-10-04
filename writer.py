@@ -69,12 +69,49 @@ def sanitize(html):
     return "".join(parts).strip()
 
 
-def generate_llm(prompt):
+def _stem(word):
+    w = word.lower().replace("ё", "е")
+    return w[:5] if len(w) > 5 else w[:max(3, len(w) - 1)]
+
+
+ASSET_MARKERS = {"IMOEX": ["мосбирж", "imoex", "индекс"], "RGBI": ["rgbi", "облигац", "офз"],
+                 "USDRUB": ["usd", "доллар", "рубл"]}
+
+
+def problems(text, cards=(), assets=(), min_len=300):
+    """Проверка готового поста: всё ли на месте. Пустой список — пост целый."""
+    low = re.sub(r"<[^>]+>", "", text).lower().replace("ё", "е")
+    out = []
+    if len(low) < min_len:
+        out.append(f"короткий текст ({len(low)} симв.)")
+    for k in assets:
+        if not any(m in low for m in ASSET_MARKERS[k]):
+            out.append(f"нет блока {k}")
+    for c in cards:
+        if not all(_stem(w) in low for w in c["name"].split()):
+            out.append(f"нет карты «{c['name']}»")
+    for t in ("b", "i"):
+        if text.count(f"<{t}>") != text.count(f"</{t}>"):
+            out.append(f"незакрытый тег <{t}>")
+    return out
+
+
+def generate_llm(prompt, system=None, cards=(), assets=(), min_len=300, attempts=3):
+    """Генерация с проверкой: обрезанный или неполный текст перегенерируем, после 3 неудач — None."""
     import anthropic
     client = anthropic.Anthropic()
-    msg = client.messages.create(model=MODEL, max_tokens=1200, system=STYLE,
-                                 messages=[{"role": "user", "content": prompt}])
-    return "".join(b.text for b in msg.content if b.type == "text")
+    for i in range(1, attempts + 1):
+        msg = client.messages.create(model=MODEL, max_tokens=4000, system=system or STYLE,
+                                     messages=[{"role": "user", "content": prompt}])
+        text = sanitize("".join(b.text for b in msg.content if b.type == "text"))
+        bad = problems(text, cards, assets, min_len)
+        if msg.stop_reason != "end_turn":
+            bad.insert(0, f"stop_reason={msg.stop_reason}")
+        print(f"[writer] попытка {i}: {len(text)} симв., stop={msg.stop_reason}, "
+              f"токены {msg.usage.input_tokens}/{msg.usage.output_tokens}" + (f" — ПРОБЛЕМЫ: {'; '.join(bad)}" if bad else " — ok"))
+        if not bad:
+            return text
+    return None
 
 
 HOOKS = ["Карты легли. Рынок нервно закурил.", "Утро, кофе, Таро. Стакан трепещет.",
@@ -98,7 +135,10 @@ def generate(date_str, spread, market, score, first=False):
     prompt = build_prompt(date_str, spread, market, score, first)
     if os.getenv("ANTHROPIC_API_KEY"):
         try:
-            return sanitize(generate_llm(prompt))
+            text = generate_llm(prompt, STYLE, cards=list(spread.values()), assets=list(spread))
+            if text:
+                return text
+            print("[writer] текст так и не собрался целиком — публикуем шаблон")
         except Exception as e:
             print(f"[writer] LLM недоступна, шаблон: {e}")
     return generate_fallback(date_str, spread, market, score)
@@ -137,11 +177,10 @@ def generate_weekly(summary, week_moves, next_card):
     prompt = build_weekly_prompt(summary, week_moves, next_card)
     if os.getenv("ANTHROPIC_API_KEY"):
         try:
-            import anthropic
-            msg = anthropic.Anthropic().messages.create(
-                model=MODEL, max_tokens=1200, system=WEEKLY_STYLE,
-                messages=[{"role": "user", "content": prompt}])
-            return sanitize("".join(b.text for b in msg.content if b.type == "text"))
+            text = generate_llm(prompt, WEEKLY_STYLE, cards=[next_card], min_len=250)
+            if text:
+                return text
+            print("[writer] итоги так и не собрались целиком — публикуем шаблон")
         except Exception as e:
             print(f"[writer] LLM недоступна, шаблон: {e}")
     from market import ASSETS
