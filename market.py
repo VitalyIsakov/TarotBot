@@ -72,3 +72,44 @@ def fetch_all():
             print(f"[market] {key}: {e}")
             out[key] = None
     return out
+
+
+# ---------- подписи дат (общие для текста и картинки) ----------
+WD = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
+WD_ACC = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]  # «на …», «в …»
+MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
+          "сентября", "октября", "ноября", "декабря"]
+SHORT = {"IMOEX": "индекс", "RGBI": "RGBI", "USDRUB": "доллар"}
+
+
+def _d(x):
+    return x if isinstance(x, dt.date) else dt.date.fromisoformat(str(x)[:10])
+
+
+def day_short(x):
+    """пт 02.10"""
+    d = _d(x)
+    return f"{WD[d.weekday()]} {d:%d.%m}"
+
+
+def day_long(x):
+    """пятницу, 2 октября"""
+    d = _d(x)
+    return f"{WD_ACC[d.weekday()]}, {d.day} {MONTHS[d.month - 1]}"
+
+
+def asof(key, m):
+    """За какой день цифра: закрытие биржи или дата, с которой действует курс ЦБ."""
+    if not m:
+        return "нет данных"
+    return f"курс ЦБ с {day_short(m['date'])}" if key == "USDRUB" else f"закрытие {day_short(m['date'])}"
+
+
+def dateline(forecast_day, mkt):
+    """Строка под заголовком поста: на какой день прогноз и за какие дни котировки."""
+    groups = {}
+    for k, m in mkt.items():
+        if m:
+            groups.setdefault(asof(k, m), []).append(SHORT[k])
+    data = "; ".join(f"{' и '.join(names)} — {lab}" for lab, names in groups.items()) or "нет данных"
+    return f"🗓 <b>Прогноз на {day_long(forecast_day)}</b>\n<i>Котировки: {data}</i>"

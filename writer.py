@@ -16,7 +16,10 @@ STYLE = """Ты — автор телеграм-канала «Таро для �
 - Первая строка — цепляющий заголовок-хук, который хочется дочитать (жирным).
 - Блок на каждый актив: эмодзи + название актива, карта (и «перевёрнута», если так), 1–2 ярких предложения
   трактовки, привязанных к реальному вчерашнему движению. Шутки, но без воды.
-- Если есть итоги вчерашнего расклада — коротко и честно признай счёт (угадали/промахнулись), с юмором.
+- Если есть итоги прошлого расклада — коротко и честно признай счёт (угадали/промахнулись), с юмором.
+- Даты: строку «Прогноз на …» с датами котировок код добавит под заголовком сам — не дублируй её.
+  Прошлые движения и итоги называй днём недели («в пятницу индекс +0,05%»), слово «вчера» не используй:
+  после выходных и праздников оно вводит в заблуждение.
 - В конце — одна строка-«совет дня от карт» (афоризм, НЕ торговая рекомендация) и вопрос/призыв к реакции
   (например «ставьте 🔥 если верите картам»).
 - НИКОГДА не давай прямых указаний купить/продать, целевых цен и уровней входа. Это гадание, не ИИР.
@@ -27,27 +30,36 @@ STYLE = """Ты — автор телеграм-канала «Таро для �
 
 
 def _fmt_market(key, m):
+    from market import asof, day_long
     if not m:
         return "данные недоступны"
     s = f"{m['close']:,.2f}".replace(",", " ") + f" ({m['chg_1d']:+.2f}% за день"
     if m.get("chg_5d") is not None:
         s += f", {m['chg_5d']:+.2f}% за неделю"
-    return s + f", на {m['date']})"
+    return s + f"; {asof(key, m)}, то есть {day_long(m['date'])})"
 
 
 def _card_line(c):
     return f"{c['name']}{' (перевёрнута)' if c['reversed'] else ''} — {c['meaning']}"
 
 
-def build_prompt(date_str, spread, market, score, first=False):
-    lines = [f"Дата расклада: {date_str}.", "", "Расклад и рынок:"]
+def build_prompt(day, spread, market, score, first=False):
+    from market import day_long, day_short
+    lines = [f"Прогноз на {day_long(day)} (торговая сессия этого дня).", "", "Расклад и последние котировки:"]
     for key, card in spread.items():
         pol = {1: "тянет вверх", -1: "тянет вниз", 0: "боковик/неясно"}[card["effective_polarity"]]
         lines.append(f"- {ASSETS[key]['title']}: {_fmt_market(key, market.get(key))}. "
                      f"Карта: {_card_line(card)}. Энергия карты: {pol}.")
     if score:
-        lines += ["", f"Итоги прошлого расклада: угадано {score['hits']} из {score['total']}"
-                      f" ({score['detail']}). Общая точность оракула: {score['acc_all']}."]
+        lines += ["", f"Итоги прошлого расклада (прогноз на {day_long(score['pred_day'])}): "
+                      f"угадано {score['hits']} из {score['total']}. Общая точность оракула: {score['acc_all']}."]
+        for k, r in score["results"].items():
+            lines.append(f"- {ASSETS[k]['title']}: карта {r['card']}{' (перевёрнута)' if r['reversed'] else ''}; "
+                         f"движение {r['chg']:+.2f}% (с {day_short(r['from'])} по {day_short(r['to'])}) — "
+                         f"{'угадано' if r['hit'] else 'промах'}")
+        skipped = [ASSETS[k]['title'] for k in spread if k not in score["results"]]
+        if skipped:
+            lines.append(f"Не оценивались (новых котировок ещё не было): {', '.join(skipped)}.")
     if first:
         lines += ["", "Это самый первый пост канала: в заголовке обыграй запуск, в конце скажи, что с завтрашнего дня "
                       "оракул начинает публично вести счёт своих попаданий."]
@@ -118,7 +130,7 @@ HOOKS = ["Карты легли. Рынок нервно закурил.", "Ут
          "Расклад дня: держитесь за свечи.", "Оракул проснулся раньше маркетмейкера."]
 
 
-def generate_fallback(date_str, spread, market, score):
+def generate_fallback(day, spread, market, score):
     out = [f"<b>🔮 {random.choice(HOOKS)}</b>", ""]
     for key, c in spread.items():
         a = ASSETS[key]
@@ -126,22 +138,31 @@ def generate_fallback(date_str, spread, market, score):
         out.append(f"<i>{c['meaning'].split(' — ')[0].capitalize()}.</i>")
         out.append("")
     if score:
-        out.append(f"📊 Вчера карты угадали {score['hits']} из {score['total']}. Точность оракула: {score['acc_all']}.")
+        from market import day_short
+        out.append(f"📊 Расклад на {day_short(score['pred_day'])}: угадано {score['hits']} из {score['total']}. "
+                   f"Точность оракула: {score['acc_all']}.")
     out.append("Ставьте 🔥 если верите картам, 🗿 если верите только стакану.")
     return "\n".join(out)
 
 
-def generate(date_str, spread, market, score, first=False):
-    prompt = build_prompt(date_str, spread, market, score, first)
+def with_dateline(text, day, market):
+    """Строка с датой прогноза и датами котировок — сразу под заголовком (первой строкой поста)."""
+    from market import dateline
+    head, _, rest = text.partition("\n")
+    return f"{head}\n{dateline(day, market)}\n\n{rest.lstrip()}" if rest.strip() else f"{head}\n{dateline(day, market)}"
+
+
+def generate(day, spread, market, score, first=False):
+    prompt = build_prompt(day, spread, market, score, first)
+    text = None
     if os.getenv("ANTHROPIC_API_KEY"):
         try:
             text = generate_llm(prompt, STYLE, cards=list(spread.values()), assets=list(spread))
-            if text:
-                return text
-            print("[writer] текст так и не собрался целиком — публикуем шаблон")
+            if not text:
+                print("[writer] текст так и не собрался целиком — публикуем шаблон")
         except Exception as e:
             print(f"[writer] LLM недоступна, шаблон: {e}")
-    return generate_fallback(date_str, spread, market, score)
+    return with_dateline(text or generate_fallback(day, spread, market, score), day, market)
 
 
 WEEKLY_STYLE = STYLE + """

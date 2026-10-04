@@ -4,12 +4,12 @@ import os
 import datetime as dt
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from market import ASSETS
+from market import ASSETS, asof, WD_ACC
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 F = lambda name, size: ImageFont.truetype(os.path.join(HERE, "assets", name), size)
 
-W, H = 1280, 900
+W, H = 1280, 940
 CW, CH = 300, 520
 BG_TOP, BG_BOT = (14, 12, 34), (40, 18, 58)
 GOLD, GOLD_DIM = (226, 186, 104), (150, 118, 62)
@@ -141,19 +141,22 @@ def render(spread, market, date, out_path, handle=""):
     f_chg = F("DejaVuSans.ttf", 22)
     f_rev = F("DejaVuSerif-Italic.ttf", 21)
 
+    f_asof = F("DejaVuSans.ttf", 18)
     d.text((W / 2, 62), "РАСКЛАД ТАРО НА РЫНОК", font=f_title, fill=GOLD, anchor="mm")
-    d.text((W / 2, 108), f"{date.day} {MONTHS[date.month - 1]} {date.year}", font=f_sub, fill=GREY, anchor="mm")
+    d.text((W / 2, 110), f"прогноз на {WD_ACC[date.weekday()]}, {date.day} {MONTHS[date.month - 1]} {date.year}",
+           font=F("DejaVuSans-Bold.ttf", 24), fill=(240, 236, 225), anchor="mm")
 
     gap = (W - 3 * CW) / 4
     for i, (key, card) in enumerate(spread.items()):
         x = int(gap + i * (CW + gap))
-        y = 220
+        y = 262
         m = market.get(key)
-        d.text((x + CW / 2, 160), ASSETS[key]["title"].split(" (")[0], font=f_asset, fill=(240, 236, 225), anchor="mm")
+        d.text((x + CW / 2, 168), ASSETS[key]["title"].split(" (")[0], font=f_asset, fill=(240, 236, 225), anchor="mm")
         if m:
             col = GREEN if m["chg_1d"] > 0 else RED if m["chg_1d"] < 0 else GREY
-            d.text((x + CW / 2, 192), f"{m['close']:,.2f}".replace(",", " ") + f"   {m['chg_1d']:+.2f}%",
+            d.text((x + CW / 2, 200), f"{m['close']:,.2f}".replace(",", " ") + f"   {m['chg_1d']:+.2f}%",
                    font=f_chg, fill=col, anchor="mm")
+        d.text((x + CW / 2, 228), asof(key, m), font=f_asof, fill=GREY, anchor="mm")
         face = _card_image(card)
         if card["reversed"]:
             face = face.rotate(180)

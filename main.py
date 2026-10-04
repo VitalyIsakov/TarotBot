@@ -52,13 +52,15 @@ def score_previous(state, mkt):
         total += 1
         detail.append(f"{key} {chg:+.2f}% — {'✅' if hit else '❌'}")
         results[key] = {"card": p.get("card"), "reversed": p.get("reversed"), "image": p.get("image"),
-                        "chg": round(chg, 3), "hit": bool(hit), "pred_day": last["day"]}
+                        "chg": round(chg, 3), "hit": bool(hit), "pred_day": last["day"],
+                        "from": p.get("date"), "to": m["date"]}
     if not total:
         return None
     state["hits"] += hits
     state["total"] += total
     acc = f"{state['hits'] / state['total'] * 100:.0f}% ({state['hits']}/{state['total']})"
-    return {"hits": hits, "total": total, "detail": "; ".join(detail), "acc_all": acc, "results": results}
+    return {"hits": hits, "total": total, "detail": "; ".join(detail), "acc_all": acc, "results": results,
+            "pred_day": last["day"]}
 
 
 def main():
@@ -94,7 +96,7 @@ def main():
     cards = deck.draw(len(market.ASSETS))
     spread = dict(zip(market.ASSETS.keys(), cards))
 
-    text = writer.generate(today.strftime("%d.%m.%Y"), spread, mkt, score, first=not state.get("last")) + DISCLAIMER
+    text = writer.generate(today, spread, mkt, score, first=not state.get("last")) + DISCLAIMER
     img_path = os.path.join(HERE, "data", f"spread_{today.isoformat()}.jpg")
     os.makedirs(os.path.dirname(img_path), exist_ok=True)
     render.render(spread, mkt, today, img_path, handle=os.getenv("CHANNEL_HANDLE", ""))
