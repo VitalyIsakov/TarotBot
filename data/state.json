@@ -1,0 +1,34 @@
+{
+ "last": {
+  "day": "2026-10-05",
+  "picks": {
+   "IMOEX": {
+    "card": "Королева Мечей",
+    "reversed": false,
+    "polarity": 0,
+    "image": "swords_13.jpg",
+    "close": 2279.75,
+    "date": "2026-10-02"
+   },
+   "RGBI": {
+    "card": "Повешенный",
+    "reversed": false,
+    "polarity": -1,
+    "image": "major_12.jpg",
+    "close": 111.19,
+    "date": "2026-10-02"
+   },
+   "USDRUB": {
+    "card": "Отшельник",
+    "reversed": false,
+    "polarity": 0,
+    "image": "major_09.jpg",
+    "close": 83.95,
+    "date": "2026-10-02"
+   }
+  }
+ },
+ "hits": 0,
+ "total": 0,
+ "history": []
+}
