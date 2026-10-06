@@ -1,34 +1,70 @@
 {
  "last": {
-  "day": "2026-10-05",
+  "day": "2026-10-06",
   "picks": {
    "IMOEX": {
-    "card": "Королева Мечей",
+    "card": "Суд",
     "reversed": false,
     "polarity": 0,
-    "image": "swords_13.jpg",
-    "close": 2279.75,
-    "date": "2026-10-02"
+    "image": "major_20.jpg",
+    "close": 2321.57,
+    "date": "2026-10-05"
    },
    "RGBI": {
-    "card": "Повешенный",
+    "card": "Императрица",
     "reversed": false,
-    "polarity": -1,
-    "image": "major_12.jpg",
-    "close": 111.19,
-    "date": "2026-10-02"
+    "polarity": 1,
+    "image": "major_03.jpg",
+    "close": 111.29,
+    "date": "2026-10-05"
    },
    "USDRUB": {
-    "card": "Отшельник",
+    "card": "Восьмёрка Мечей",
     "reversed": false,
-    "polarity": 0,
-    "image": "major_09.jpg",
-    "close": 83.95,
-    "date": "2026-10-02"
+    "polarity": -1,
+    "image": "swords_08.jpg",
+    "close": 85.73,
+    "date": "2026-10-05"
    }
   }
  },
  "hits": 0,
- "total": 0,
- "history": []
+ "total": 3,
+ "history": [
+  {
+   "day": "2026-10-05",
+   "results": {
+    "IMOEX": {
+     "card": "Королева Мечей",
+     "reversed": false,
+     "image": "swords_13.jpg",
+     "chg": 1.834,
+     "hit": false,
+     "pred_day": "2026-10-05",
+     "from": "2026-10-02",
+     "to": "2026-10-05"
+    },
+    "RGBI": {
+     "card": "Повешенный",
+     "reversed": false,
+     "image": "major_12.jpg",
+     "chg": 0.09,
+     "hit": false,
+     "pred_day": "2026-10-05",
+     "from": "2026-10-02",
+     "to": "2026-10-05"
+    },
+    "USDRUB": {
+     "card": "Отшельник",
+     "reversed": false,
+     "image": "major_09.jpg",
+     "chg": 2.12,
+     "hit": false,
+     "pred_day": "2026-10-05",
+     "from": "2026-10-02",
+     "to": "2026-10-05"
+    }
+   }
+  }
+ ]
 }
