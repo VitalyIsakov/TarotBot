@@ -2,17 +2,18 @@ name: daily-tarot
 
 on:
   schedule:
-       - cron: "45 5 * * 0-5"   # 08:45 МСК
-       - cron: "10 6 * * 0-5"   # 09:10 МСК — запасной
-       - cron: "35 6 * * 0-5"   # 09:35 МСК — запасной  workflow_dispatch:        # ручной запуск кнопкой в GitHub
+    - cron: "45 5 * * 0-5"
+    - cron: "10 6 * * 0-5"
+    - cron: "35 6 * * 0-5"
+  workflow_dispatch:
     inputs:
       args:
-        description: "Параметры: --test (тестовый пост, без сохранения счёта), --weekly (итоги), --force (повторно сегодня)"
+        description: "--test / --weekly / --force"
         required: false
         default: ""
 
 permissions:
-  contents: write           # чтобы сохранить data/state.json (счёт точности)
+  contents: write
 
 concurrency: daily-tarot
 
