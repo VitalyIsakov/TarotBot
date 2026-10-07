@@ -1,35 +1,35 @@
 {
  "last": {
-  "day": "2026-10-06",
+  "day": "2026-10-07",
   "picks": {
    "IMOEX": {
-    "card": "Суд",
-    "reversed": false,
-    "polarity": 0,
-    "image": "major_20.jpg",
-    "close": 2321.57,
-    "date": "2026-10-05"
-   },
-   "RGBI": {
-    "card": "Императрица",
-    "reversed": false,
-    "polarity": 1,
-    "image": "major_03.jpg",
-    "close": 111.29,
-    "date": "2026-10-05"
-   },
-   "USDRUB": {
-    "card": "Восьмёрка Мечей",
+    "card": "Девятка Мечей",
     "reversed": false,
     "polarity": -1,
-    "image": "swords_08.jpg",
-    "close": 85.73,
-    "date": "2026-10-05"
+    "image": "swords_09.jpg",
+    "close": 2325.31,
+    "date": "2026-10-06"
+   },
+   "RGBI": {
+    "card": "Четвёрка Пентаклей",
+    "reversed": false,
+    "polarity": 0,
+    "image": "pentacles_04.jpg",
+    "close": 111.08,
+    "date": "2026-10-06"
+   },
+   "USDRUB": {
+    "card": "Сила",
+    "reversed": false,
+    "polarity": 1,
+    "image": "major_08.jpg",
+    "close": 85.27,
+    "date": "2026-10-06"
    }
   }
  },
- "hits": 0,
- "total": 3,
+ "hits": 2,
+ "total": 6,
  "history": [
   {
    "day": "2026-10-05",
@@ -63,6 +63,41 @@
      "pred_day": "2026-10-05",
      "from": "2026-10-02",
      "to": "2026-10-05"
+    }
+   }
+  },
+  {
+   "day": "2026-10-06",
+   "results": {
+    "IMOEX": {
+     "card": "Суд",
+     "reversed": false,
+     "image": "major_20.jpg",
+     "chg": 0.161,
+     "hit": true,
+     "pred_day": "2026-10-06",
+     "from": "2026-10-05",
+     "to": "2026-10-06"
+    },
+    "RGBI": {
+     "card": "Императрица",
+     "reversed": false,
+     "image": "major_03.jpg",
+     "chg": -0.189,
+     "hit": false,
+     "pred_day": "2026-10-06",
+     "from": "2026-10-05",
+     "to": "2026-10-06"
+    },
+    "USDRUB": {
+     "card": "Восьмёрка Мечей",
+     "reversed": false,
+     "image": "swords_08.jpg",
+     "chg": -0.537,
+     "hit": true,
+     "pred_day": "2026-10-06",
+     "from": "2026-10-05",
+     "to": "2026-10-06"
     }
    }
   }
