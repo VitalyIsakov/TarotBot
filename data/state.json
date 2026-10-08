@@ -1,35 +1,35 @@
 {
  "last": {
-  "day": "2026-10-07",
+  "day": "2026-10-08",
   "picks": {
    "IMOEX": {
-    "card": "Девятка Мечей",
-    "reversed": false,
-    "polarity": -1,
-    "image": "swords_09.jpg",
-    "close": 2325.31,
-    "date": "2026-10-06"
-   },
-   "RGBI": {
-    "card": "Четвёрка Пентаклей",
-    "reversed": false,
-    "polarity": 0,
-    "image": "pentacles_04.jpg",
-    "close": 111.08,
-    "date": "2026-10-06"
-   },
-   "USDRUB": {
-    "card": "Сила",
+    "card": "Девятка Пентаклей",
     "reversed": false,
     "polarity": 1,
-    "image": "major_08.jpg",
-    "close": 85.27,
-    "date": "2026-10-06"
+    "image": "pentacles_09.jpg",
+    "close": 2338.21,
+    "date": "2026-10-07"
+   },
+   "RGBI": {
+    "card": "Король Мечей",
+    "reversed": false,
+    "polarity": 0,
+    "image": "swords_14.jpg",
+    "close": 111.11,
+    "date": "2026-10-07"
+   },
+   "USDRUB": {
+    "card": "Четвёрка Мечей",
+    "reversed": false,
+    "polarity": 0,
+    "image": "swords_04.jpg",
+    "close": 85.51,
+    "date": "2026-10-07"
    }
   }
  },
- "hits": 2,
- "total": 6,
+ "hits": 4,
+ "total": 9,
  "history": [
   {
    "day": "2026-10-05",
@@ -98,6 +98,41 @@
      "pred_day": "2026-10-06",
      "from": "2026-10-05",
      "to": "2026-10-06"
+    }
+   }
+  },
+  {
+   "day": "2026-10-07",
+   "results": {
+    "IMOEX": {
+     "card": "Девятка Мечей",
+     "reversed": false,
+     "image": "swords_09.jpg",
+     "chg": 0.555,
+     "hit": false,
+     "pred_day": "2026-10-07",
+     "from": "2026-10-06",
+     "to": "2026-10-07"
+    },
+    "RGBI": {
+     "card": "Четвёрка Пентаклей",
+     "reversed": false,
+     "image": "pentacles_04.jpg",
+     "chg": 0.027,
+     "hit": true,
+     "pred_day": "2026-10-07",
+     "from": "2026-10-06",
+     "to": "2026-10-07"
+    },
+    "USDRUB": {
+     "card": "Сила",
+     "reversed": false,
+     "image": "major_08.jpg",
+     "chg": 0.281,
+     "hit": true,
+     "pred_day": "2026-10-07",
+     "from": "2026-10-06",
+     "to": "2026-10-07"
     }
    }
   }
