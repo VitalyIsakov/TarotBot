@@ -18,6 +18,7 @@ STATE = os.path.join(HERE, "data", "state.json")
 TZ = ZoneInfo("Europe/Moscow")
 # порог «боковика» в % — для карт с нейтральной энергией
 FLAT = {"IMOEX": 0.5, "RGBI": 0.2, "USDRUB": 0.3}
+LATE_LIMIT = dt.time(11, 0)  # после этого времени опоздавший плановый запуск расклад не публикует
 DISCLAIMER = "\n\n<i>Расклад — развлекательный контент, не является индивидуальной инвестиционной рекомендацией.</i>"
 
 
@@ -85,6 +86,14 @@ def main():
             print("Итоги недели уже опубликованы.")
             return
         return run_weekly(state, today, args)
+
+    # GitHub иногда выполняет плановые запуски с опозданием на часы. Утренний прогноз днём не публикуем.
+    # Ручной запуск и запуск через внешний будильник (workflow_dispatch) это ограничение не касается.
+    now = dt.datetime.now(TZ)
+    if os.getenv("GITHUB_EVENT_NAME") == "schedule" and now.time() > LATE_LIMIT and not args.test:
+        print(f"Плановый запуск опоздал (сейчас {now:%H:%M} МСК) — прогноз не публикуем. "
+              f"Если поста сегодня нет, запустите вручную.")
+        return
 
     if args.test:  # тест в выходной/праздник показывает пост на ближайший торговый день
         day = market.next_trading_day(today)
