@@ -1,35 +1,35 @@
 {
  "last": {
-  "day": "2026-10-08",
+  "day": "2026-10-09",
   "picks": {
    "IMOEX": {
-    "card": "Девятка Пентаклей",
-    "reversed": false,
-    "polarity": 1,
-    "image": "pentacles_09.jpg",
-    "close": 2338.21,
-    "date": "2026-10-07"
+    "card": "Четвёрка Жезлов",
+    "reversed": true,
+    "polarity": -1,
+    "image": "wands_04.jpg",
+    "close": 2310.65,
+    "date": "2026-10-08"
    },
    "RGBI": {
-    "card": "Король Мечей",
-    "reversed": false,
-    "polarity": 0,
-    "image": "swords_14.jpg",
-    "close": 111.11,
-    "date": "2026-10-07"
+    "card": "Колесница",
+    "reversed": true,
+    "polarity": -1,
+    "image": "major_07.jpg",
+    "close": 110.62,
+    "date": "2026-10-08"
    },
    "USDRUB": {
-    "card": "Четвёрка Мечей",
-    "reversed": false,
+    "card": "Шут",
+    "reversed": true,
     "polarity": 0,
-    "image": "swords_04.jpg",
-    "close": 85.51,
-    "date": "2026-10-07"
+    "image": "major_00.jpg",
+    "close": 85.13,
+    "date": "2026-10-08"
    }
   }
  },
  "hits": 4,
- "total": 9,
+ "total": 12,
  "history": [
   {
    "day": "2026-10-05",
@@ -133,6 +133,41 @@
      "pred_day": "2026-10-07",
      "from": "2026-10-06",
      "to": "2026-10-07"
+    }
+   }
+  },
+  {
+   "day": "2026-10-08",
+   "results": {
+    "IMOEX": {
+     "card": "Девятка Пентаклей",
+     "reversed": false,
+     "image": "pentacles_09.jpg",
+     "chg": -1.179,
+     "hit": false,
+     "pred_day": "2026-10-08",
+     "from": "2026-10-07",
+     "to": "2026-10-08"
+    },
+    "RGBI": {
+     "card": "Король Мечей",
+     "reversed": false,
+     "image": "swords_14.jpg",
+     "chg": -0.441,
+     "hit": false,
+     "pred_day": "2026-10-08",
+     "from": "2026-10-07",
+     "to": "2026-10-08"
+    },
+    "USDRUB": {
+     "card": "Четвёрка Мечей",
+     "reversed": false,
+     "image": "swords_04.jpg",
+     "chg": -0.444,
+     "hit": false,
+     "pred_day": "2026-10-08",
+     "from": "2026-10-07",
+     "to": "2026-10-08"
     }
    }
   }
