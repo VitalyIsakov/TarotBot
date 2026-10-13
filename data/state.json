@@ -1,35 +1,35 @@
 {
  "last": {
-  "day": "2026-10-12",
+  "day": "2026-10-13",
   "picks": {
    "IMOEX": {
-    "card": "Семёрка Пентаклей",
+    "card": "Королева Кубков",
     "reversed": false,
     "polarity": 0,
-    "image": "pentacles_07.jpg",
-    "close": 2401.8,
-    "date": "2026-10-09"
+    "image": "cups_13.jpg",
+    "close": 2389.04,
+    "date": "2026-10-12"
    },
    "RGBI": {
-    "card": "Дьявол",
-    "reversed": false,
-    "polarity": -1,
-    "image": "major_15.jpg",
-    "close": 110.85,
-    "date": "2026-10-09"
+    "card": "Верховная Жрица",
+    "reversed": true,
+    "polarity": 0,
+    "image": "major_02.jpg",
+    "close": 111.08,
+    "date": "2026-10-12"
    },
    "USDRUB": {
-    "card": "Солнце",
+    "card": "Туз Пентаклей",
     "reversed": false,
     "polarity": 1,
-    "image": "major_19.jpg",
-    "close": 85.02,
-    "date": "2026-10-09"
+    "image": "pentacles_01.jpg",
+    "close": 83.98,
+    "date": "2026-10-12"
    }
   }
  },
  "hits": 5,
- "total": 15,
+ "total": 18,
  "history": [
   {
    "day": "2026-10-05",
@@ -203,6 +203,41 @@
      "pred_day": "2026-10-09",
      "from": "2026-10-08",
      "to": "2026-10-09"
+    }
+   }
+  },
+  {
+   "day": "2026-10-12",
+   "results": {
+    "IMOEX": {
+     "card": "Семёрка Пентаклей",
+     "reversed": false,
+     "image": "pentacles_07.jpg",
+     "chg": -0.531,
+     "hit": false,
+     "pred_day": "2026-10-12",
+     "from": "2026-10-09",
+     "to": "2026-10-12"
+    },
+    "RGBI": {
+     "card": "Дьявол",
+     "reversed": false,
+     "image": "major_15.jpg",
+     "chg": 0.207,
+     "hit": false,
+     "pred_day": "2026-10-12",
+     "from": "2026-10-09",
+     "to": "2026-10-12"
+    },
+    "USDRUB": {
+     "card": "Солнце",
+     "reversed": false,
+     "image": "major_19.jpg",
+     "chg": -1.223,
+     "hit": false,
+     "pred_day": "2026-10-12",
+     "from": "2026-10-09",
+     "to": "2026-10-12"
     }
    }
   }
