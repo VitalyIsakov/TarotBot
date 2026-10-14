@@ -1,35 +1,35 @@
 {
  "last": {
-  "day": "2026-10-13",
+  "day": "2026-10-14",
   "picks": {
    "IMOEX": {
-    "card": "Королева Кубков",
-    "reversed": false,
-    "polarity": 0,
-    "image": "cups_13.jpg",
-    "close": 2389.04,
-    "date": "2026-10-12"
-   },
-   "RGBI": {
-    "card": "Верховная Жрица",
-    "reversed": true,
-    "polarity": 0,
-    "image": "major_02.jpg",
-    "close": 111.08,
-    "date": "2026-10-12"
-   },
-   "USDRUB": {
-    "card": "Туз Пентаклей",
+    "card": "Королева Пентаклей",
     "reversed": false,
     "polarity": 1,
-    "image": "pentacles_01.jpg",
-    "close": 83.98,
-    "date": "2026-10-12"
+    "image": "pentacles_13.jpg",
+    "close": 2426.53,
+    "date": "2026-10-13"
+   },
+   "RGBI": {
+    "card": "Отшельник",
+    "reversed": false,
+    "polarity": 0,
+    "image": "major_09.jpg",
+    "close": 111.24,
+    "date": "2026-10-13"
+   },
+   "USDRUB": {
+    "card": "Двойка Пентаклей",
+    "reversed": false,
+    "polarity": 0,
+    "image": "pentacles_02.jpg",
+    "close": 84.21,
+    "date": "2026-10-13"
    }
   }
  },
- "hits": 5,
- "total": 18,
+ "hits": 7,
+ "total": 21,
  "history": [
   {
    "day": "2026-10-05",
@@ -238,6 +238,41 @@
      "pred_day": "2026-10-12",
      "from": "2026-10-09",
      "to": "2026-10-12"
+    }
+   }
+  },
+  {
+   "day": "2026-10-13",
+   "results": {
+    "IMOEX": {
+     "card": "Королева Кубков",
+     "reversed": false,
+     "image": "cups_13.jpg",
+     "chg": 1.569,
+     "hit": false,
+     "pred_day": "2026-10-13",
+     "from": "2026-10-12",
+     "to": "2026-10-13"
+    },
+    "RGBI": {
+     "card": "Верховная Жрица",
+     "reversed": true,
+     "image": "major_02.jpg",
+     "chg": 0.144,
+     "hit": true,
+     "pred_day": "2026-10-13",
+     "from": "2026-10-12",
+     "to": "2026-10-13"
+    },
+    "USDRUB": {
+     "card": "Туз Пентаклей",
+     "reversed": false,
+     "image": "pentacles_01.jpg",
+     "chg": 0.274,
+     "hit": true,
+     "pred_day": "2026-10-13",
+     "from": "2026-10-12",
+     "to": "2026-10-13"
     }
    }
   }
