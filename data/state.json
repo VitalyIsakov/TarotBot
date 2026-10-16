@@ -1,35 +1,35 @@
 {
  "last": {
-  "day": "2026-10-15",
+  "day": "2026-10-16",
   "picks": {
    "IMOEX": {
-    "card": "Тройка Кубков",
-    "reversed": false,
-    "polarity": 1,
-    "image": "cups_03.jpg",
-    "close": 2413.68,
-    "date": "2026-10-14"
-   },
-   "RGBI": {
-    "card": "Семёрка Кубков",
+    "card": "Пятёрка Мечей",
     "reversed": false,
     "polarity": -1,
-    "image": "cups_07.jpg",
-    "close": 111.51,
-    "date": "2026-10-14"
+    "image": "swords_05.jpg",
+    "close": 2391.72,
+    "date": "2026-10-15"
+   },
+   "RGBI": {
+    "card": "Дьявол",
+    "reversed": false,
+    "polarity": -1,
+    "image": "major_15.jpg",
+    "close": 111.68,
+    "date": "2026-10-15"
    },
    "USDRUB": {
-    "card": "Шестёрка Кубков",
-    "reversed": false,
+    "card": "Четвёрка Пентаклей",
+    "reversed": true,
     "polarity": 0,
-    "image": "cups_06.jpg",
-    "close": 83.51,
-    "date": "2026-10-14"
+    "image": "pentacles_04.jpg",
+    "close": 84,
+    "date": "2026-10-15"
    }
   }
  },
  "hits": 7,
- "total": 24,
+ "total": 27,
  "history": [
   {
    "day": "2026-10-05",
@@ -308,6 +308,41 @@
      "pred_day": "2026-10-14",
      "from": "2026-10-13",
      "to": "2026-10-14"
+    }
+   }
+  },
+  {
+   "day": "2026-10-15",
+   "results": {
+    "IMOEX": {
+     "card": "Тройка Кубков",
+     "reversed": false,
+     "image": "cups_03.jpg",
+     "chg": -0.91,
+     "hit": false,
+     "pred_day": "2026-10-15",
+     "from": "2026-10-14",
+     "to": "2026-10-15"
+    },
+    "RGBI": {
+     "card": "Семёрка Кубков",
+     "reversed": false,
+     "image": "cups_07.jpg",
+     "chg": 0.152,
+     "hit": false,
+     "pred_day": "2026-10-15",
+     "from": "2026-10-14",
+     "to": "2026-10-15"
+    },
+    "USDRUB": {
+     "card": "Шестёрка Кубков",
+     "reversed": false,
+     "image": "cups_06.jpg",
+     "chg": 0.587,
+     "hit": false,
+     "pred_day": "2026-10-15",
+     "from": "2026-10-14",
+     "to": "2026-10-15"
     }
    }
   }
