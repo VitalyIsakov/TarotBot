@@ -170,8 +170,10 @@ def render(spread, market, date, out_path, handle=""):
             size -= 1
         f_name = F("DejaVuSerif-Bold.ttf", size)
         d.text((x + CW / 2, y + CH + 32), card["name"].upper(), font=f_name, fill=GOLD, anchor="mm")
-        if card["reversed"]:
-            d.text((x + CW / 2, y + CH + 64), "↻ перевёрнута", font=f_rev, fill=GOLD_DIM, anchor="mm")
+        if card.get("direction") in (1, -1):  # прогноз по рынку: только вверх или вниз
+            up = card["direction"] == 1
+            d.text((x + CW / 2, y + CH + 68), "▲ ВВЕРХ" if up else "▼ ВНИЗ",
+                   font=F("DejaVuSans-Bold.ttf", 26), fill=GREEN if up else RED, anchor="mm")
     if handle:
         d.text((W - 24, H - 20), handle, font=f_sub, fill=GOLD_DIM, anchor="rs")
     img.convert("RGB").save(out_path, quality=92)

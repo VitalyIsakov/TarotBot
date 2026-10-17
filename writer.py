@@ -17,8 +17,16 @@ STYLE = """Ты — автор телеграм-канала «Таро для �
 
 Правила:
 - Первая строка — цепляющий заголовок-хук, который хочется дочитать (жирным).
-- Блок на каждый актив: эмодзи + название актива, карта (и «перевёрнута», если так), 1–2 ярких предложения
-  трактовки, привязанных к реальному вчерашнему движению. Шутки, но без воды.
+- Блок на каждый актив: эмодзи + название актива, карта и прогноз. Прогноз только ВВЕРХ или ВНИЗ — назови
+  его прямо и однозначно («прогноз — вверх», «карта тянет вниз»). Боковика не бывает. Направление в данных
+  уже определено — не меняй его и не сомневайся в нём.
+- Трактовку бери из данных (это канон канала), пересказывай своими словами, с юмором, 1–2 предложения.
+  Если основание «инерция» — карта про затишье, поэтому рынок по инерции продолжает последнее движение;
+  «разворот» — Иерофант возвращает рынок назад; «монетка» — Колесо Фортуны, как повезёт. Обыграй это.
+- Новости: если в данных есть список новостей, уместно и коротко сошлись на 1–2 самых значимых для рынка
+  (ставка ЦБ, санкции, нефть, крупные отчёты и дивиденды) — как фон и повод для шутки, а не как обоснование:
+  прогноз определяют карты. Упоминай только события из списка, не додумывай деталей и цифр, которых в
+  заголовке нет. Не шути о войне, жертвах и трагедиях; политику — только через влияние на рынок, нейтрально.
 - Если есть итоги прошлого расклада — коротко и честно признай счёт (угадали/промахнулись), с юмором.
 - Даты: строку «Прогноз на …» с датами котировок код добавит под заголовком сам — не дублируй её.
   Прошлые движения и итоги называй днём недели («в пятницу индекс +0,05%»), слово «вчера» не используй:
@@ -47,26 +55,36 @@ def _fmt_market(key, m):
 
 
 def _card_line(c):
-    return f"{c['name']}{' (перевёрнута)' if c['reversed'] else ''} — {c['meaning']}"
+    return f"{c['name']} — {c['meaning']}"
 
 
-def build_prompt(day, spread, market, score, first=False):
+DIR_WORD = {1: "ВВЕРХ", -1: "ВНИЗ"}
+BASIS_TEXT = {"card": "прямо по трактовке карты",
+              "inertia": "инерция: карта про затишье или про этот рынок молчит — рынок продолжает последнее движение",
+              "reversal": "разворот: Иерофант возвращает рынок назад, против последнего движения",
+              "coin": "монетка: Колесо Фортуны, выпало случайно"}
+
+
+def build_prompt(day, spread, market, score, first=False, news=None):
     from market import day_long, day_short
     lines = [f"Прогноз на {day_long(day)} (торговая сессия этого дня).", "", "Расклад и последние котировки:"]
     for key, card in spread.items():
-        pol = {1: "тянет вверх", -1: "тянет вниз", 0: "боковик/неясно"}[card["effective_polarity"]]
         lines.append(f"- {ASSETS[key]['title']}: {_fmt_market(key, market.get(key))}. "
-                     f"Карта: {_card_line(card)}. Энергия карты: {pol}.")
+                     f"Карта: {_card_line(card)}. ПРОГНОЗ: {DIR_WORD[card['direction']]} "
+                     f"({BASIS_TEXT[card['basis']]}).")
     if score:
         lines += ["", f"Итоги прошлого расклада (прогноз на {day_long(score['pred_day'])}): "
                       f"угадано {score['hits']} из {score['total']}. Общая точность оракула: {score['acc_all']}."]
         for k, r in score["results"].items():
-            lines.append(f"- {ASSETS[k]['title']}: карта {r['card']}{' (перевёрнута)' if r['reversed'] else ''}; "
+            was = {1: "прогноз был вверх", -1: "прогноз был вниз"}.get(r.get("direction"), "прогноз был старого образца")
+            lines.append(f"- {ASSETS[k]['title']}: карта {r['card']}{' (перевёрнута)' if r['reversed'] else ''}, {was}; "
                          f"движение {r['chg']:+.2f}% (с {day_short(r['from'])} по {day_short(r['to'])}) — "
                          f"{'угадано' if r['hit'] else 'промах'}")
         skipped = [ASSETS[k]['title'] for k in spread if k not in score["results"]]
         if skipped:
             lines.append(f"Не оценивались (новых котировок ещё не было): {', '.join(skipped)}.")
+    if news:
+        lines += ["", "Новости с прошлой сессии (заголовки, свежие сверху):"] + [f"- {n}" for n in news]
     if first:
         lines += ["", "Это самый первый пост канала: в заголовке обыграй запуск, в конце скажи, что с завтрашнего дня "
                       "оракул начинает публично вести счёт своих попаданий."]
@@ -153,12 +171,19 @@ HOOKS = ["Карты легли. Рынок нервно закурил.", "Ут
          "Расклад дня: держитесь за свечи.", "Оракул проснулся раньше маркетмейкера."]
 
 
+def _short_meaning(c):
+    return re.split(r"[:.]", c["meaning"])[0].strip()
+
+
 def generate_fallback(day, spread, market, score):
     out = [f"<b>🔮 {random.choice(HOOKS)}</b>", ""]
     for key, c in spread.items():
         a = ASSETS[key]
-        out.append(f"{a['emoji']} <b>{a['title']}</b> — {c['name']}{' (перевёрнута)' if c['reversed'] else ''}")
-        out.append(f"<i>{c['meaning'].split(' — ')[0].capitalize()}.</i>")
+        out.append(f"{a['emoji']} <b>{a['title']}</b> — {c['name']}, прогноз {DIR_WORD[c['direction']].lower()}")
+        reason = {"inertia": "Затишье: рынок по инерции продолжает последнее движение",
+                  "reversal": "Иерофант разворачивает рынок против последнего движения",
+                  "coin": "Колесо Фортуны: как повезёт"}.get(c.get("basis"), _short_meaning(c))
+        out.append(f"<i>{reason}.</i>")
         out.append("")
     if score:
         from market import day_short
@@ -168,15 +193,22 @@ def generate_fallback(day, spread, market, score):
     return "\n".join(out)
 
 
-def with_dateline(text, day, market):
-    """Строка с датой прогноза и датами котировок — сразу под заголовком (первой строкой поста)."""
+ARROW = {1: "⬆️", -1: "⬇️"}
+SHORT_NAME = {"IMOEX": "Индекс", "RGBI": "RGBI", "USDRUB": "USDRUBF"}
+
+
+def with_dateline(text, day, market, spread=None):
+    """Под заголовком: дата прогноза, даты котировок и сводка направлений по всем активам."""
     from market import dateline
+    block = dateline(day, market)
+    if spread:
+        block += "\n<b>" + " · ".join(f"{SHORT_NAME[k]} {ARROW[c['direction']]}" for k, c in spread.items()) + "</b>"
     head, _, rest = text.partition("\n")
-    return f"{head}\n\n{dateline(day, market)}\n\n{rest.lstrip()}" if rest.strip() else f"{head}\n\n{dateline(day, market)}"
+    return f"{head}\n\n{block}\n\n{rest.lstrip()}" if rest.strip() else f"{head}\n\n{block}"
 
 
-def generate(day, spread, market, score, first=False):
-    prompt = build_prompt(day, spread, market, score, first)
+def generate(day, spread, market, score, first=False, news=None):
+    prompt = build_prompt(day, spread, market, score, first, news)
     text = None
     if os.getenv("ANTHROPIC_API_KEY"):
         try:
@@ -185,7 +217,7 @@ def generate(day, spread, market, score, first=False):
                 print("[writer] текст так и не собрался целиком — публикуем шаблон")
         except Exception as e:
             print(f"[writer] LLM недоступна, шаблон: {e}")
-    return with_dateline(text or generate_fallback(day, spread, market, score), day, market)
+    return with_dateline(text or generate_fallback(day, spread, market, score), day, market, spread)
 
 
 WEEKLY_STYLE = STYLE + """
@@ -195,12 +227,13 @@ WEEKLY_STYLE = STYLE + """
 - Честный разбор: на каком активе карты были сильнее всего, на каком провалились, лучший и худший прогноз недели
   с картой и реальным движением. Самоирония приветствуется: оракул не всегда прав, и это часть шоу.
 - Как рынок прошёл неделю (цифры даны).
-- «Карта следующей недели» — короткая интригующая трактовка, без конкретных прогнозов по ценам.
+- «Карта следующей недели» — короткая интригующая трактовка по канону из данных, без прогнозов по ценам.
+- Если есть новости недели — одна короткая уместная отсылка к главному событию.
 - Призыв: поделиться постом / написать в комментариях, на какой актив вытянуть карту в следующий раз.
 Объём: строго до 900 символов."""
 
 
-def build_weekly_prompt(summary, week_moves, next_card):
+def build_weekly_prompt(summary, week_moves, next_card, news=None):
     from market import ASSETS
     lines = [f"Неделя {summary['start']:%d.%m}–{summary['end']:%d.%m}. "
              f"Точность: {summary['acc']}% ({summary['hits']} из {summary['total']})."]
@@ -213,12 +246,14 @@ def build_weekly_prompt(summary, week_moves, next_card):
             lines.append(f"{tag}: {day}, {ASSETS[k]['title']}, карта {r['card']}"
                          f"{' (перевёрнута)' if r['reversed'] else ''}, факт {r['chg']:+.2f}%.")
     lines.append(f"Карта следующей недели: {_card_line(next_card)}.")
+    if news:
+        lines += ["Новости недели (заголовки):"] + [f"- {n}" for n in news]
     lines.append("Напиши пост.")
     return "\n".join(lines)
 
 
-def generate_weekly(summary, week_moves, next_card):
-    prompt = build_weekly_prompt(summary, week_moves, next_card)
+def generate_weekly(summary, week_moves, next_card, news=None):
+    prompt = build_weekly_prompt(summary, week_moves, next_card, news)
     if os.getenv("ANTHROPIC_API_KEY"):
         try:
             text = generate_llm(prompt, WEEKLY_STYLE, cards=[next_card], min_len=250)
@@ -233,6 +268,6 @@ def generate_weekly(summary, week_moves, next_card):
         mv = week_moves.get(k)
         out.append(f"{ASSETS[k]['emoji']} {ASSETS[k]['title']}: {h}/{t}" + (f", за неделю {mv:+.2f}%" if mv is not None else ""))
     out += ["", f"🃏 <b>Карта следующей недели — {next_card['name']}"
-            f"{' (перевёрнута)' if next_card['reversed'] else ''}.</b> <i>{next_card['meaning'].split(' — ')[0].capitalize()}.</i>",
+            f".</b> <i>{_short_meaning(next_card)}.</i>",
             "", "Напишите в комментариях, на какой актив вытянуть карту в следующий раз 👇"]
     return "\n".join(out)

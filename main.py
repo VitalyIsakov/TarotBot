@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 
 import deck
 import market
+import news
 import render
 import writer
 import telegram
@@ -16,8 +17,8 @@ import weekly
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATE = os.path.join(HERE, "data", "state.json")
 TZ = ZoneInfo("Europe/Moscow")
-# порог «боковика» в % — для карт с нейтральной энергией
-FLAT = {"IMOEX": 0.5, "RGBI": 0.2, "USDRUB": 0.3}
+# Коридор «боковика» нужен только для сверки старых прогнозов, сделанных до перехода на «вверх/вниз»
+LEGACY_FLAT = {"IMOEX": 0.5, "RGBI": 0.2, "USDRUB": 0.3}
 LATE_LIMIT = dt.time(11, 0)  # после этого времени опоздавший плановый запуск расклад не публикует
 DISCLAIMER = "\n\n<i>Расклад — развлекательный контент, не является индивидуальной инвестиционной рекомендацией.</i>"
 
@@ -37,7 +38,7 @@ def save_state(s):
 
 
 def score_previous(state, mkt):
-    """Сверяем энергию вчерашних карт с фактическим движением с момента расклада."""
+    """Сверяем прогноз (вверх/вниз) с фактическим движением с момента расклада."""
     last = state.get("last")
     if not last or last.get("scored"):
         return None
@@ -48,11 +49,12 @@ def score_previous(state, mkt):
             continue  # новых данных нет — не судим
         chg = (m["close"] / p["close"] - 1) * 100
         pol = p["polarity"]
-        hit = (pol > 0 and chg > 0) or (pol < 0 and chg < 0) or (pol == 0 and abs(chg) < FLAT[key])
+        hit = (pol > 0 and chg > 0) or (pol < 0 and chg < 0) or (pol == 0 and abs(chg) < LEGACY_FLAT[key])
         hits += hit
         total += 1
         detail.append(f"{key} {chg:+.2f}% — {'✅' if hit else '❌'}")
         results[key] = {"card": p.get("card"), "reversed": p.get("reversed"), "image": p.get("image"),
+                        "direction": pol,
                         "chg": round(chg, 3), "hit": bool(hit), "pred_day": last["day"],
                         "from": p.get("date"), "to": m["date"]}
     if not total:
@@ -110,8 +112,12 @@ def main():
 
     cards = deck.draw(len(market.ASSETS))
     spread = dict(zip(market.ASSETS.keys(), cards))
+    for k, c in spread.items():  # карта → направление «вверх/вниз» для своего рынка
+        c["direction"], c["basis"] = deck.direction(c, k, (mkt.get(k) or {}).get("chg_1d"))
+        c["effective_polarity"] = c["direction"]
 
-    text = writer.generate(day, spread, mkt, score, first=not state.get("last")) + DISCLAIMER
+    headlines = news.fetch(day)
+    text = writer.generate(day, spread, mkt, score, first=not state.get("last"), news=headlines) + DISCLAIMER
     img_path = os.path.join(HERE, "data", f"spread_{today.isoformat()}.jpg")
     os.makedirs(os.path.dirname(img_path), exist_ok=True)
     render.render(spread, mkt, day, img_path, handle=os.getenv("CHANNEL_HANDLE", ""))
@@ -126,7 +132,7 @@ def main():
         print("Тестовый пост опубликован, состояние не сохранено.")
         return
     state["last"] = {"day": day.isoformat(), "picks": {
-        k: {"card": c["name"], "reversed": c["reversed"], "polarity": c["effective_polarity"],
+        k: {"card": c["name"], "reversed": c["reversed"], "polarity": c["direction"], "basis": c["basis"],
             "image": c["image"], "close": (mkt[k] or {}).get("close"), "date": (mkt[k] or {}).get("date")}
         for k, c in spread.items()}}
     if score:  # история ведётся по дню прогноза
@@ -149,8 +155,8 @@ def run_weekly(state, today, args):
             save_state(state)
         return
     moves = {k: (m or {}).get("chg_5d") for k, m in mkt.items()}
-    next_card = deck.draw(1, reversal_chance=0.3)[0]
-    text = writer.generate_weekly(summary, moves, next_card) + DISCLAIMER
+    next_card = deck.draw(1)[0]
+    text = writer.generate_weekly(summary, moves, next_card, news=news.fetch(today, hours=96)) + DISCLAIMER
     img_path = os.path.join(HERE, "data", f"week_{today.isoformat()}.jpg")
     os.makedirs(os.path.dirname(img_path), exist_ok=True)
     weekly.render_week(summary, moves, next_card, today, img_path, handle=os.getenv("CHANNEL_HANDLE", ""))
