@@ -26,10 +26,11 @@
     "close": 84,
     "date": "2026-10-15"
    }
-  }
+  },
+  "scored": true
  },
- "hits": 7,
- "total": 27,
+ "hits": 8,
+ "total": 30,
  "history": [
   {
    "day": "2026-10-05",
@@ -345,7 +346,45 @@
      "to": "2026-10-15"
     }
    }
+  },
+  {
+   "day": "2026-10-16",
+   "results": {
+    "IMOEX": {
+     "card": "Пятёрка Мечей",
+     "reversed": false,
+     "image": "swords_05.jpg",
+     "direction": -1,
+     "chg": 1.645,
+     "hit": false,
+     "pred_day": "2026-10-16",
+     "from": "2026-10-15",
+     "to": "2026-10-16"
+    },
+    "RGBI": {
+     "card": "Дьявол",
+     "reversed": false,
+     "image": "major_15.jpg",
+     "direction": -1,
+     "chg": -0.018,
+     "hit": true,
+     "pred_day": "2026-10-16",
+     "from": "2026-10-15",
+     "to": "2026-10-16"
+    },
+    "USDRUB": {
+     "card": "Четвёрка Пентаклей",
+     "reversed": true,
+     "image": "pentacles_04.jpg",
+     "direction": 0,
+     "chg": -0.75,
+     "hit": false,
+     "pred_day": "2026-10-16",
+     "from": "2026-10-15",
+     "to": "2026-10-16"
+    }
+   }
   }
  ],
- "last_weekly": "2026-10-11"
+ "last_weekly": "2026-10-18"
 }
