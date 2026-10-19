@@ -1,33 +1,35 @@
 {
  "last": {
-  "day": "2026-10-16",
+  "day": "2026-10-19",
   "picks": {
    "IMOEX": {
-    "card": "Пятёрка Мечей",
+    "card": "Восьмёрка Пентаклей",
     "reversed": false,
-    "polarity": -1,
-    "image": "swords_05.jpg",
-    "close": 2391.72,
-    "date": "2026-10-15"
+    "polarity": 1,
+    "basis": "card",
+    "image": "pentacles_08.jpg",
+    "close": 2431.07,
+    "date": "2026-10-16"
    },
    "RGBI": {
-    "card": "Дьявол",
+    "card": "Четвёрка Кубков",
     "reversed": false,
     "polarity": -1,
-    "image": "major_15.jpg",
-    "close": 111.68,
-    "date": "2026-10-15"
+    "basis": "card",
+    "image": "cups_04.jpg",
+    "close": 111.66,
+    "date": "2026-10-16"
    },
    "USDRUB": {
-    "card": "Четвёрка Пентаклей",
-    "reversed": true,
-    "polarity": 0,
-    "image": "pentacles_04.jpg",
-    "close": 84,
-    "date": "2026-10-15"
+    "card": "Умеренность",
+    "reversed": false,
+    "polarity": -1,
+    "basis": "inertia",
+    "image": "major_14.jpg",
+    "close": 83.37,
+    "date": "2026-10-16"
    }
-  },
-  "scored": true
+  }
  },
  "hits": 8,
  "total": 30,
