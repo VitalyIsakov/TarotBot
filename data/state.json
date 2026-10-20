@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-10-19",
+  "day": "2026-10-20",
   "picks": {
    "IMOEX": {
-    "card": "Восьмёрка Пентаклей",
+    "card": "Король Мечей",
+    "reversed": false,
+    "polarity": -1,
+    "basis": "card",
+    "image": "swords_14.jpg",
+    "close": 2455.22,
+    "date": "2026-10-19"
+   },
+   "RGBI": {
+    "card": "Туз Жезлов",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "pentacles_08.jpg",
-    "close": 2431.07,
-    "date": "2026-10-16"
-   },
-   "RGBI": {
-    "card": "Четвёрка Кубков",
-    "reversed": false,
-    "polarity": -1,
-    "basis": "card",
-    "image": "cups_04.jpg",
-    "close": 111.66,
-    "date": "2026-10-16"
+    "image": "wands_01.jpg",
+    "close": 111.7,
+    "date": "2026-10-19"
    },
    "USDRUB": {
-    "card": "Умеренность",
+    "card": "Двойка Мечей",
     "reversed": false,
     "polarity": -1,
     "basis": "inertia",
-    "image": "major_14.jpg",
-    "close": 83.37,
-    "date": "2026-10-16"
+    "image": "swords_02.jpg",
+    "close": 83.05,
+    "date": "2026-10-19"
    }
   }
  },
- "hits": 8,
- "total": 30,
+ "hits": 10,
+ "total": 33,
  "history": [
   {
    "day": "2026-10-05",
@@ -384,6 +384,44 @@
      "pred_day": "2026-10-16",
      "from": "2026-10-15",
      "to": "2026-10-16"
+    }
+   }
+  },
+  {
+   "day": "2026-10-19",
+   "results": {
+    "IMOEX": {
+     "card": "Восьмёрка Пентаклей",
+     "reversed": false,
+     "image": "pentacles_08.jpg",
+     "direction": 1,
+     "chg": 0.993,
+     "hit": true,
+     "pred_day": "2026-10-19",
+     "from": "2026-10-16",
+     "to": "2026-10-19"
+    },
+    "RGBI": {
+     "card": "Четвёрка Кубков",
+     "reversed": false,
+     "image": "cups_04.jpg",
+     "direction": -1,
+     "chg": 0.036,
+     "hit": false,
+     "pred_day": "2026-10-19",
+     "from": "2026-10-16",
+     "to": "2026-10-19"
+    },
+    "USDRUB": {
+     "card": "Умеренность",
+     "reversed": false,
+     "image": "major_14.jpg",
+     "direction": -1,
+     "chg": -0.384,
+     "hit": true,
+     "pred_day": "2026-10-19",
+     "from": "2026-10-16",
+     "to": "2026-10-19"
     }
    }
   }
