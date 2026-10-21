@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-10-20",
+  "day": "2026-10-21",
   "picks": {
    "IMOEX": {
-    "card": "Король Мечей",
+    "card": "Суд",
     "reversed": false,
-    "polarity": -1,
-    "basis": "card",
-    "image": "swords_14.jpg",
-    "close": 2455.22,
-    "date": "2026-10-19"
+    "polarity": 1,
+    "basis": "inertia",
+    "image": "major_20.jpg",
+    "close": 2472.26,
+    "date": "2026-10-20"
    },
    "RGBI": {
-    "card": "Туз Жезлов",
+    "card": "Рыцарь Кубков",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "wands_01.jpg",
-    "close": 111.7,
-    "date": "2026-10-19"
+    "image": "cups_12.jpg",
+    "close": 111.68,
+    "date": "2026-10-20"
    },
    "USDRUB": {
-    "card": "Двойка Мечей",
+    "card": "Королева Мечей",
     "reversed": false,
-    "polarity": -1,
-    "basis": "inertia",
-    "image": "swords_02.jpg",
-    "close": 83.05,
-    "date": "2026-10-19"
+    "polarity": 1,
+    "basis": "card",
+    "image": "swords_13.jpg",
+    "close": 82.49,
+    "date": "2026-10-20"
    }
   }
  },
- "hits": 10,
- "total": 33,
+ "hits": 11,
+ "total": 36,
  "history": [
   {
    "day": "2026-10-05",
@@ -422,6 +422,44 @@
      "pred_day": "2026-10-19",
      "from": "2026-10-16",
      "to": "2026-10-19"
+    }
+   }
+  },
+  {
+   "day": "2026-10-20",
+   "results": {
+    "IMOEX": {
+     "card": "Король Мечей",
+     "reversed": false,
+     "image": "swords_14.jpg",
+     "direction": -1,
+     "chg": 0.694,
+     "hit": false,
+     "pred_day": "2026-10-20",
+     "from": "2026-10-19",
+     "to": "2026-10-20"
+    },
+    "RGBI": {
+     "card": "Туз Жезлов",
+     "reversed": false,
+     "image": "wands_01.jpg",
+     "direction": 1,
+     "chg": -0.018,
+     "hit": false,
+     "pred_day": "2026-10-20",
+     "from": "2026-10-19",
+     "to": "2026-10-20"
+    },
+    "USDRUB": {
+     "card": "Двойка Мечей",
+     "reversed": false,
+     "image": "swords_02.jpg",
+     "direction": -1,
+     "chg": -0.674,
+     "hit": true,
+     "pred_day": "2026-10-20",
+     "from": "2026-10-19",
+     "to": "2026-10-20"
     }
    }
   }
