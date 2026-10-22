@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-10-21",
+  "day": "2026-10-22",
   "picks": {
    "IMOEX": {
-    "card": "Суд",
+    "card": "Десятка Пентаклей",
     "reversed": false,
     "polarity": 1,
-    "basis": "inertia",
-    "image": "major_20.jpg",
-    "close": 2472.26,
-    "date": "2026-10-20"
+    "basis": "card",
+    "image": "pentacles_10.jpg",
+    "close": 2447.83,
+    "date": "2026-10-21"
    },
    "RGBI": {
-    "card": "Рыцарь Кубков",
+    "card": "Мир",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "cups_12.jpg",
-    "close": 111.68,
-    "date": "2026-10-20"
+    "image": "major_21.jpg",
+    "close": 112.1,
+    "date": "2026-10-21"
    },
    "USDRUB": {
-    "card": "Королева Мечей",
+    "card": "Туз Мечей",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "swords_13.jpg",
-    "close": 82.49,
-    "date": "2026-10-20"
+    "image": "swords_01.jpg",
+    "close": 81.69,
+    "date": "2026-10-21"
    }
   }
  },
- "hits": 11,
- "total": 36,
+ "hits": 12,
+ "total": 39,
  "history": [
   {
    "day": "2026-10-05",
@@ -460,6 +460,44 @@
      "pred_day": "2026-10-20",
      "from": "2026-10-19",
      "to": "2026-10-20"
+    }
+   }
+  },
+  {
+   "day": "2026-10-21",
+   "results": {
+    "IMOEX": {
+     "card": "Суд",
+     "reversed": false,
+     "image": "major_20.jpg",
+     "direction": 1,
+     "chg": -0.988,
+     "hit": false,
+     "pred_day": "2026-10-21",
+     "from": "2026-10-20",
+     "to": "2026-10-21"
+    },
+    "RGBI": {
+     "card": "Рыцарь Кубков",
+     "reversed": false,
+     "image": "cups_12.jpg",
+     "direction": 1,
+     "chg": 0.376,
+     "hit": true,
+     "pred_day": "2026-10-21",
+     "from": "2026-10-20",
+     "to": "2026-10-21"
+    },
+    "USDRUB": {
+     "card": "Королева Мечей",
+     "reversed": false,
+     "image": "swords_13.jpg",
+     "direction": 1,
+     "chg": -0.97,
+     "hit": false,
+     "pred_day": "2026-10-21",
+     "from": "2026-10-20",
+     "to": "2026-10-21"
     }
    }
   }
