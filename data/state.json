@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-10-22",
+  "day": "2026-10-23",
   "picks": {
    "IMOEX": {
-    "card": "Десятка Пентаклей",
+    "card": "Четвёрка Мечей",
     "reversed": false,
-    "polarity": 1,
-    "basis": "card",
-    "image": "pentacles_10.jpg",
-    "close": 2447.83,
-    "date": "2026-10-21"
+    "polarity": -1,
+    "basis": "inertia",
+    "image": "swords_04.jpg",
+    "close": 2431.66,
+    "date": "2026-10-22"
    },
    "RGBI": {
-    "card": "Мир",
+    "card": "Семёрка Жезлов",
     "reversed": false,
-    "polarity": 1,
+    "polarity": -1,
     "basis": "card",
-    "image": "major_21.jpg",
-    "close": 112.1,
-    "date": "2026-10-21"
+    "image": "wands_07.jpg",
+    "close": 111.99,
+    "date": "2026-10-22"
    },
    "USDRUB": {
-    "card": "Туз Мечей",
+    "card": "Повешенный",
     "reversed": false,
-    "polarity": 1,
-    "basis": "card",
-    "image": "swords_01.jpg",
-    "close": 81.69,
-    "date": "2026-10-21"
+    "polarity": -1,
+    "basis": "inertia",
+    "image": "major_12.jpg",
+    "close": 81.3,
+    "date": "2026-10-22"
    }
   }
  },
  "hits": 12,
- "total": 39,
+ "total": 42,
  "history": [
   {
    "day": "2026-10-05",
@@ -498,6 +498,44 @@
      "pred_day": "2026-10-21",
      "from": "2026-10-20",
      "to": "2026-10-21"
+    }
+   }
+  },
+  {
+   "day": "2026-10-22",
+   "results": {
+    "IMOEX": {
+     "card": "Десятка Пентаклей",
+     "reversed": false,
+     "image": "pentacles_10.jpg",
+     "direction": 1,
+     "chg": -0.661,
+     "hit": false,
+     "pred_day": "2026-10-22",
+     "from": "2026-10-21",
+     "to": "2026-10-22"
+    },
+    "RGBI": {
+     "card": "Мир",
+     "reversed": false,
+     "image": "major_21.jpg",
+     "direction": 1,
+     "chg": -0.098,
+     "hit": false,
+     "pred_day": "2026-10-22",
+     "from": "2026-10-21",
+     "to": "2026-10-22"
+    },
+    "USDRUB": {
+     "card": "Туз Мечей",
+     "reversed": false,
+     "image": "swords_01.jpg",
+     "direction": 1,
+     "chg": -0.477,
+     "hit": false,
+     "pred_day": "2026-10-22",
+     "from": "2026-10-21",
+     "to": "2026-10-22"
     }
    }
   }
