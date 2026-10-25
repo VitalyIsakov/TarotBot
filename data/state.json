@@ -29,10 +29,11 @@
     "close": 81.3,
     "date": "2026-10-22"
    }
-  }
+  },
+  "scored": true
  },
- "hits": 12,
- "total": 42,
+ "hits": 14,
+ "total": 45,
  "history": [
   {
    "day": "2026-10-05",
@@ -538,7 +539,45 @@
      "to": "2026-10-22"
     }
    }
+  },
+  {
+   "day": "2026-10-23",
+   "results": {
+    "IMOEX": {
+     "card": "Четвёрка Мечей",
+     "reversed": false,
+     "image": "swords_04.jpg",
+     "direction": -1,
+     "chg": 1.55,
+     "hit": false,
+     "pred_day": "2026-10-23",
+     "from": "2026-10-22",
+     "to": "2026-10-23"
+    },
+    "RGBI": {
+     "card": "Семёрка Жезлов",
+     "reversed": false,
+     "image": "wands_07.jpg",
+     "direction": -1,
+     "chg": -0.089,
+     "hit": true,
+     "pred_day": "2026-10-23",
+     "from": "2026-10-22",
+     "to": "2026-10-23"
+    },
+    "USDRUB": {
+     "card": "Повешенный",
+     "reversed": false,
+     "image": "major_12.jpg",
+     "direction": -1,
+     "chg": -0.812,
+     "hit": true,
+     "pred_day": "2026-10-23",
+     "from": "2026-10-22",
+     "to": "2026-10-23"
+    }
+   }
   }
  ],
- "last_weekly": "2026-10-18"
+ "last_weekly": "2026-10-25"
 }
