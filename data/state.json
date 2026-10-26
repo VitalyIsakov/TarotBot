@@ -1,36 +1,35 @@
 {
  "last": {
-  "day": "2026-10-23",
+  "day": "2026-10-26",
   "picks": {
    "IMOEX": {
-    "card": "Четвёрка Мечей",
+    "card": "Колесница",
     "reversed": false,
-    "polarity": -1,
-    "basis": "inertia",
-    "image": "swords_04.jpg",
-    "close": 2431.66,
-    "date": "2026-10-22"
+    "polarity": 1,
+    "basis": "card",
+    "image": "major_07.jpg",
+    "close": 2469.36,
+    "date": "2026-10-23"
    },
    "RGBI": {
-    "card": "Семёрка Жезлов",
+    "card": "Семёрка Мечей",
     "reversed": false,
     "polarity": -1,
     "basis": "card",
-    "image": "wands_07.jpg",
-    "close": 111.99,
-    "date": "2026-10-22"
+    "image": "swords_07.jpg",
+    "close": 111.89,
+    "date": "2026-10-23"
    },
    "USDRUB": {
-    "card": "Повешенный",
+    "card": "Королева Жезлов",
     "reversed": false,
-    "polarity": -1,
-    "basis": "inertia",
-    "image": "major_12.jpg",
-    "close": 81.3,
-    "date": "2026-10-22"
+    "polarity": 1,
+    "basis": "card",
+    "image": "wands_13.jpg",
+    "close": 80.64,
+    "date": "2026-10-23"
    }
-  },
-  "scored": true
+  }
  },
  "hits": 14,
  "total": 45,
