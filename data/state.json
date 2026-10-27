@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-10-26",
+  "day": "2026-10-27",
   "picks": {
    "IMOEX": {
-    "card": "Колесница",
+    "card": "Паж Пентаклей",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "major_07.jpg",
-    "close": 2469.36,
-    "date": "2026-10-23"
+    "image": "pentacles_11.jpg",
+    "close": 2491.83,
+    "date": "2026-10-26"
    },
    "RGBI": {
-    "card": "Семёрка Мечей",
-    "reversed": false,
-    "polarity": -1,
-    "basis": "card",
-    "image": "swords_07.jpg",
-    "close": 111.89,
-    "date": "2026-10-23"
-   },
-   "USDRUB": {
-    "card": "Королева Жезлов",
+    "card": "Колесо Фортуны",
     "reversed": false,
     "polarity": 1,
-    "basis": "card",
-    "image": "wands_13.jpg",
-    "close": 80.64,
-    "date": "2026-10-23"
+    "basis": "coin",
+    "image": "major_10.jpg",
+    "close": 111.98,
+    "date": "2026-10-26"
+   },
+   "USDRUB": {
+    "card": "Семёрка Жезлов",
+    "reversed": false,
+    "polarity": 1,
+    "basis": "inertia",
+    "image": "wands_07.jpg",
+    "close": 80.76,
+    "date": "2026-10-26"
    }
   }
  },
- "hits": 14,
- "total": 45,
+ "hits": 16,
+ "total": 48,
  "history": [
   {
    "day": "2026-10-05",
@@ -574,6 +574,44 @@
      "pred_day": "2026-10-23",
      "from": "2026-10-22",
      "to": "2026-10-23"
+    }
+   }
+  },
+  {
+   "day": "2026-10-26",
+   "results": {
+    "IMOEX": {
+     "card": "Колесница",
+     "reversed": false,
+     "image": "major_07.jpg",
+     "direction": 1,
+     "chg": 0.91,
+     "hit": true,
+     "pred_day": "2026-10-26",
+     "from": "2026-10-23",
+     "to": "2026-10-26"
+    },
+    "RGBI": {
+     "card": "Семёрка Мечей",
+     "reversed": false,
+     "image": "swords_07.jpg",
+     "direction": -1,
+     "chg": 0.08,
+     "hit": false,
+     "pred_day": "2026-10-26",
+     "from": "2026-10-23",
+     "to": "2026-10-26"
+    },
+    "USDRUB": {
+     "card": "Королева Жезлов",
+     "reversed": false,
+     "image": "wands_13.jpg",
+     "direction": 1,
+     "chg": 0.149,
+     "hit": true,
+     "pred_day": "2026-10-26",
+     "from": "2026-10-23",
+     "to": "2026-10-26"
     }
    }
   }
