@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-10-28",
+  "day": "2026-10-29",
   "picks": {
    "IMOEX": {
-    "card": "Десятка Жезлов",
+    "card": "Король Мечей",
     "reversed": false,
     "polarity": -1,
     "basis": "card",
-    "image": "wands_10.jpg",
-    "close": 2524.06,
-    "date": "2026-10-27"
+    "image": "swords_14.jpg",
+    "close": 2522.93,
+    "date": "2026-10-28"
    },
    "RGBI": {
-    "card": "Пятёрка Кубков",
+    "card": "Король Пентаклей",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "cups_05.jpg",
-    "close": 112.45,
-    "date": "2026-10-27"
+    "image": "pentacles_14.jpg",
+    "close": 112.53,
+    "date": "2026-10-28"
    },
    "USDRUB": {
-    "card": "Восьмёрка Кубков",
+    "card": "Король Жезлов",
     "reversed": false,
-    "polarity": -1,
-    "basis": "inertia",
-    "image": "cups_08.jpg",
-    "close": 80.65,
-    "date": "2026-10-27"
+    "polarity": 1,
+    "basis": "card",
+    "image": "wands_14.jpg",
+    "close": 80.49,
+    "date": "2026-10-28"
    }
   }
  },
- "hits": 18,
- "total": 51,
+ "hits": 21,
+ "total": 54,
  "history": [
   {
    "day": "2026-10-05",
@@ -650,6 +650,44 @@
      "pred_day": "2026-10-27",
      "from": "2026-10-26",
      "to": "2026-10-27"
+    }
+   }
+  },
+  {
+   "day": "2026-10-28",
+   "results": {
+    "IMOEX": {
+     "card": "Десятка Жезлов",
+     "reversed": false,
+     "image": "wands_10.jpg",
+     "direction": -1,
+     "chg": -0.045,
+     "hit": true,
+     "pred_day": "2026-10-28",
+     "from": "2026-10-27",
+     "to": "2026-10-28"
+    },
+    "RGBI": {
+     "card": "Пятёрка Кубков",
+     "reversed": false,
+     "image": "cups_05.jpg",
+     "direction": 1,
+     "chg": 0.071,
+     "hit": true,
+     "pred_day": "2026-10-28",
+     "from": "2026-10-27",
+     "to": "2026-10-28"
+    },
+    "USDRUB": {
+     "card": "Восьмёрка Кубков",
+     "reversed": false,
+     "image": "cups_08.jpg",
+     "direction": -1,
+     "chg": -0.198,
+     "hit": true,
+     "pred_day": "2026-10-28",
+     "from": "2026-10-27",
+     "to": "2026-10-28"
     }
    }
   }
