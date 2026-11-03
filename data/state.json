@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-11-02",
+  "day": "2026-11-03",
   "picks": {
    "IMOEX": {
-    "card": "Семёрка Жезлов",
-    "reversed": false,
-    "polarity": -1,
-    "basis": "card",
-    "image": "wands_07.jpg",
-    "close": 2509.26,
-    "date": "2026-10-30"
-   },
-   "RGBI": {
-    "card": "Дьявол",
-    "reversed": false,
-    "polarity": -1,
-    "basis": "card",
-    "image": "major_15.jpg",
-    "close": 112.41,
-    "date": "2026-10-30"
-   },
-   "USDRUB": {
-    "card": "Королева Кубков",
+    "card": "Суд",
     "reversed": false,
     "polarity": -1,
     "basis": "inertia",
-    "image": "cups_13.jpg",
-    "close": 80.53,
-    "date": "2026-10-30"
+    "image": "major_20.jpg",
+    "close": 2459.53,
+    "date": "2026-11-02"
+   },
+   "RGBI": {
+    "card": "Паж Жезлов",
+    "reversed": false,
+    "polarity": 1,
+    "basis": "card",
+    "image": "wands_11.jpg",
+    "close": 112.23,
+    "date": "2026-11-02"
+   },
+   "USDRUB": {
+    "card": "Тройка Жезлов",
+    "reversed": false,
+    "polarity": 1,
+    "basis": "card",
+    "image": "wands_03.jpg",
+    "close": 81.5,
+    "date": "2026-11-02"
    }
   }
  },
- "hits": 23,
- "total": 60,
+ "hits": 25,
+ "total": 63,
  "history": [
   {
    "day": "2026-10-05",
@@ -764,6 +764,44 @@
      "pred_day": "2026-10-30",
      "from": "2026-10-29",
      "to": "2026-10-30"
+    }
+   }
+  },
+  {
+   "day": "2026-11-02",
+   "results": {
+    "IMOEX": {
+     "card": "Семёрка Жезлов",
+     "reversed": false,
+     "image": "wands_07.jpg",
+     "direction": -1,
+     "chg": -1.982,
+     "hit": true,
+     "pred_day": "2026-11-02",
+     "from": "2026-10-30",
+     "to": "2026-11-02"
+    },
+    "RGBI": {
+     "card": "Дьявол",
+     "reversed": false,
+     "image": "major_15.jpg",
+     "direction": -1,
+     "chg": -0.16,
+     "hit": true,
+     "pred_day": "2026-11-02",
+     "from": "2026-10-30",
+     "to": "2026-11-02"
+    },
+    "USDRUB": {
+     "card": "Королева Кубков",
+     "reversed": false,
+     "image": "cups_13.jpg",
+     "direction": -1,
+     "chg": 1.205,
+     "hit": false,
+     "pred_day": "2026-11-02",
+     "from": "2026-10-30",
+     "to": "2026-11-02"
     }
    }
   }
