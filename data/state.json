@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-11-03",
+  "day": "2026-11-05",
   "picks": {
    "IMOEX": {
-    "card": "Суд",
+    "card": "Туз Кубков",
+    "reversed": false,
+    "polarity": 1,
+    "basis": "card",
+    "image": "cups_01.jpg",
+    "close": 2446.64,
+    "date": "2026-11-03"
+   },
+   "RGBI": {
+    "card": "Четвёрка Мечей",
     "reversed": false,
     "polarity": -1,
     "basis": "inertia",
-    "image": "major_20.jpg",
-    "close": 2459.53,
-    "date": "2026-11-02"
-   },
-   "RGBI": {
-    "card": "Паж Жезлов",
-    "reversed": false,
-    "polarity": 1,
-    "basis": "card",
-    "image": "wands_11.jpg",
-    "close": 112.23,
-    "date": "2026-11-02"
+    "image": "swords_04.jpg",
+    "close": 112.2,
+    "date": "2026-11-03"
    },
    "USDRUB": {
-    "card": "Тройка Жезлов",
+    "card": "Семёрка Мечей",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "wands_03.jpg",
-    "close": 81.5,
-    "date": "2026-11-02"
+    "image": "swords_07.jpg",
+    "close": 81.66,
+    "date": "2026-11-04"
    }
   }
  },
- "hits": 25,
- "total": 63,
+ "hits": 27,
+ "total": 66,
  "history": [
   {
    "day": "2026-10-05",
@@ -802,6 +802,44 @@
      "pred_day": "2026-11-02",
      "from": "2026-10-30",
      "to": "2026-11-02"
+    }
+   }
+  },
+  {
+   "day": "2026-11-03",
+   "results": {
+    "IMOEX": {
+     "card": "Суд",
+     "reversed": false,
+     "image": "major_20.jpg",
+     "direction": -1,
+     "chg": -0.524,
+     "hit": true,
+     "pred_day": "2026-11-03",
+     "from": "2026-11-02",
+     "to": "2026-11-03"
+    },
+    "RGBI": {
+     "card": "Паж Жезлов",
+     "reversed": false,
+     "image": "wands_11.jpg",
+     "direction": 1,
+     "chg": -0.027,
+     "hit": false,
+     "pred_day": "2026-11-03",
+     "from": "2026-11-02",
+     "to": "2026-11-03"
+    },
+    "USDRUB": {
+     "card": "Тройка Жезлов",
+     "reversed": false,
+     "image": "wands_03.jpg",
+     "direction": 1,
+     "chg": 0.196,
+     "hit": true,
+     "pred_day": "2026-11-03",
+     "from": "2026-11-02",
+     "to": "2026-11-04"
     }
    }
   }
