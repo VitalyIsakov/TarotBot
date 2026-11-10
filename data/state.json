@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-11-09",
+  "day": "2026-11-10",
   "picks": {
    "IMOEX": {
-    "card": "Семёрка Мечей",
+    "card": "Мир",
+    "reversed": false,
+    "polarity": 1,
+    "basis": "card",
+    "image": "major_21.jpg",
+    "close": 2470.07,
+    "date": "2026-11-09"
+   },
+   "RGBI": {
+    "card": "Девятка Жезлов",
     "reversed": false,
     "polarity": -1,
     "basis": "card",
-    "image": "swords_07.jpg",
-    "close": 2476.7,
-    "date": "2026-11-06"
-   },
-   "RGBI": {
-    "card": "Тройка Кубков",
-    "reversed": false,
-    "polarity": 1,
-    "basis": "card",
-    "image": "cups_03.jpg",
-    "close": 111.92,
-    "date": "2026-11-06"
+    "image": "wands_09.jpg",
+    "close": 112.03,
+    "date": "2026-11-09"
    },
    "USDRUB": {
-    "card": "Восьмёрка Кубков",
+    "card": "Тройка Пентаклей",
     "reversed": false,
     "polarity": 1,
     "basis": "inertia",
-    "image": "cups_08.jpg",
-    "close": 82.27,
-    "date": "2026-11-06"
+    "image": "pentacles_03.jpg",
+    "close": 82.9,
+    "date": "2026-11-09"
    }
   }
  },
- "hits": 29,
- "total": 72,
+ "hits": 32,
+ "total": 75,
  "history": [
   {
    "day": "2026-10-05",
@@ -916,6 +916,44 @@
      "pred_day": "2026-11-06",
      "from": "2026-11-05",
      "to": "2026-11-06"
+    }
+   }
+  },
+  {
+   "day": "2026-11-09",
+   "results": {
+    "IMOEX": {
+     "card": "Семёрка Мечей",
+     "reversed": false,
+     "image": "swords_07.jpg",
+     "direction": -1,
+     "chg": -0.268,
+     "hit": true,
+     "pred_day": "2026-11-09",
+     "from": "2026-11-06",
+     "to": "2026-11-09"
+    },
+    "RGBI": {
+     "card": "Тройка Кубков",
+     "reversed": false,
+     "image": "cups_03.jpg",
+     "direction": 1,
+     "chg": 0.098,
+     "hit": true,
+     "pred_day": "2026-11-09",
+     "from": "2026-11-06",
+     "to": "2026-11-09"
+    },
+    "USDRUB": {
+     "card": "Восьмёрка Кубков",
+     "reversed": false,
+     "image": "cups_08.jpg",
+     "direction": 1,
+     "chg": 0.766,
+     "hit": true,
+     "pred_day": "2026-11-09",
+     "from": "2026-11-06",
+     "to": "2026-11-09"
     }
    }
   }
