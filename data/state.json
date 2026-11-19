@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-11-18",
+  "day": "2026-11-19",
   "picks": {
    "IMOEX": {
-    "card": "Рыцарь Пентаклей",
+    "card": "Король Жезлов",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "pentacles_12.jpg",
-    "close": 2495.86,
-    "date": "2026-11-17"
+    "image": "wands_14.jpg",
+    "close": 2470.81,
+    "date": "2026-11-18"
    },
    "RGBI": {
-    "card": "Отшельник",
+    "card": "Шестёрка Жезлов",
     "reversed": false,
     "polarity": -1,
     "basis": "card",
-    "image": "major_09.jpg",
-    "close": 111.59,
-    "date": "2026-11-17"
+    "image": "wands_06.jpg",
+    "close": 111.43,
+    "date": "2026-11-18"
    },
    "USDRUB": {
-    "card": "Колесница",
+    "card": "Паж Кубков",
     "reversed": false,
-    "polarity": -1,
+    "polarity": 1,
     "basis": "inertia",
-    "image": "major_07.jpg",
-    "close": 82.06,
-    "date": "2026-11-17"
+    "image": "cups_11.jpg",
+    "close": 82.53,
+    "date": "2026-11-18"
    }
   }
  },
- "hits": 40,
- "total": 93,
+ "hits": 41,
+ "total": 96,
  "history": [
   {
    "day": "2026-10-05",
@@ -1182,6 +1182,44 @@
      "pred_day": "2026-11-17",
      "from": "2026-11-16",
      "to": "2026-11-17"
+    }
+   }
+  },
+  {
+   "day": "2026-11-18",
+   "results": {
+    "IMOEX": {
+     "card": "Рыцарь Пентаклей",
+     "reversed": false,
+     "image": "pentacles_12.jpg",
+     "direction": 1,
+     "chg": -1.004,
+     "hit": false,
+     "pred_day": "2026-11-18",
+     "from": "2026-11-17",
+     "to": "2026-11-18"
+    },
+    "RGBI": {
+     "card": "Отшельник",
+     "reversed": false,
+     "image": "major_09.jpg",
+     "direction": -1,
+     "chg": -0.143,
+     "hit": true,
+     "pred_day": "2026-11-18",
+     "from": "2026-11-17",
+     "to": "2026-11-18"
+    },
+    "USDRUB": {
+     "card": "Колесница",
+     "reversed": false,
+     "image": "major_07.jpg",
+     "direction": -1,
+     "chg": 0.573,
+     "hit": false,
+     "pred_day": "2026-11-18",
+     "from": "2026-11-17",
+     "to": "2026-11-18"
     }
    }
   }
