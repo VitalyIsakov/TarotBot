@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+import certs
 import market
 
 TZ = ZoneInfo("Europe/Moscow")
@@ -54,7 +55,7 @@ def _score(title):
 
 def _load(source, url, cats, since):
     try:
-        r = requests.get(url, headers=UA, timeout=15)
+        r = requests.get(url, headers=UA, timeout=15, verify=certs.bundle())
         r.raise_for_status()
         root = ET.fromstring(r.content)
     except Exception as e:

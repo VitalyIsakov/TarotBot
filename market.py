@@ -9,6 +9,8 @@ import datetime as dt
 import time
 import requests
 
+import certs
+
 UA = {"User-Agent": "tarot-markets-bot/1.0"}
 ISS = "https://iss.moex.com/iss"
 
@@ -17,7 +19,7 @@ def _get(url, attempts=6, **kw):
     """GET с повторами: ISS Мосбиржи периодически рвёт соединения."""
     for i in range(attempts):
         try:
-            r = requests.get(url, headers=UA, timeout=20, **kw)
+            r = requests.get(url, headers=UA, timeout=20, verify=certs.bundle(), **kw)
             r.raise_for_status()
             return r
         except requests.RequestException:
