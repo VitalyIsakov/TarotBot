@@ -1,38 +1,38 @@
 {
  "last": {
-  "day": "2026-11-26",
+  "day": "2026-11-27",
   "picks": {
    "IMOEX": {
-    "card": "Королева Пентаклей",
+    "card": "Тройка Пентаклей",
     "reversed": false,
     "polarity": 1,
     "basis": "card",
-    "image": "pentacles_13.jpg",
-    "close": 2356.86,
-    "date": "2026-11-25"
+    "image": "pentacles_03.jpg",
+    "close": 2331.76,
+    "date": "2026-11-26"
    },
    "RGBI": {
-    "card": "Тройка Жезлов",
-    "reversed": false,
-    "polarity": 1,
-    "basis": "card",
-    "image": "wands_03.jpg",
-    "close": 110.88,
-    "date": "2026-11-25"
-   },
-   "USDRUB": {
-    "card": "Четвёрка Кубков",
+    "card": "Двойка Мечей",
     "reversed": false,
     "polarity": 1,
     "basis": "inertia",
-    "image": "cups_04.jpg",
-    "close": 82.74,
-    "date": "2026-11-25"
+    "image": "swords_02.jpg",
+    "close": 111.01,
+    "date": "2026-11-26"
+   },
+   "USDRUB": {
+    "card": "Восьмёрка Мечей",
+    "reversed": false,
+    "polarity": -1,
+    "basis": "inertia",
+    "image": "swords_08.jpg",
+    "close": 82.19,
+    "date": "2026-11-26"
    }
   }
  },
- "hits": 46,
- "total": 111,
+ "hits": 47,
+ "total": 114,
  "history": [
   {
    "day": "2026-10-05",
@@ -1410,6 +1410,44 @@
      "pred_day": "2026-11-25",
      "from": "2026-11-24",
      "to": "2026-11-25"
+    }
+   }
+  },
+  {
+   "day": "2026-11-26",
+   "results": {
+    "IMOEX": {
+     "card": "Королева Пентаклей",
+     "reversed": false,
+     "image": "pentacles_13.jpg",
+     "direction": 1,
+     "chg": -1.065,
+     "hit": false,
+     "pred_day": "2026-11-26",
+     "from": "2026-11-25",
+     "to": "2026-11-26"
+    },
+    "RGBI": {
+     "card": "Тройка Жезлов",
+     "reversed": false,
+     "image": "wands_03.jpg",
+     "direction": 1,
+     "chg": 0.117,
+     "hit": true,
+     "pred_day": "2026-11-26",
+     "from": "2026-11-25",
+     "to": "2026-11-26"
+    },
+    "USDRUB": {
+     "card": "Четвёрка Кубков",
+     "reversed": false,
+     "image": "cups_04.jpg",
+     "direction": 1,
+     "chg": -0.665,
+     "hit": false,
+     "pred_day": "2026-11-26",
+     "from": "2026-11-25",
+     "to": "2026-11-26"
     }
    }
   }
